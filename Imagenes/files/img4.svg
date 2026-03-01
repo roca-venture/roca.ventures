@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#F7F3EC"/>
+  <!-- Money bag -->
+  <circle cx="400" cy="260" r="130" fill="#E8C84A" stroke="#2A2A2A" stroke-width="3"/>
+  <path d="M355 140 Q370 110 400 105 Q430 110 445 140 Q430 155 400 152 Q370 155 355 140 Z" fill="#E8C84A" stroke="#2A2A2A" stroke-width="2.5"/>
+  <!-- $ sign -->
+  <text x="400" y="285" text-anchor="middle" font-family="Georgia, serif" font-size="100" fill="#2A2A2A" font-weight="bold">$</text>
+  <!-- Trap/chain -->
+  <path d="M270 260 Q240 320 250 380 Q260 420 300 440" stroke="#2A2A2A" stroke-width="6" fill="none" stroke-dasharray="12,8"/>
+  <path d="M530 260 Q560 320 550 380 Q540 420 500 440" stroke="#2A2A2A" stroke-width="6" fill="none" stroke-dasharray="12,8"/>
+  <!-- Shackle left -->
+  <path d="M260 400 Q240 430 260 455 Q280 475 300 460 Q320 445 310 420 Q300 405 280 405 Z" fill="none" stroke="#2A2A2A" stroke-width="5"/>
+  <!-- Shackle right -->
+  <path d="M540 400 Q560 430 540 455 Q520 475 500 460 Q480 445 490 420 Q500 405 520 405 Z" fill="none" stroke="#2A2A2A" stroke-width="5"/>
+  <!-- Lock bar -->
+  <rect x="270" y="455" width="60" height="14" rx="4" fill="#2A2A2A"/>
+  <rect x="490" y="455" width="60" height="14" rx="4" fill="#2A2A2A"/>
+  <!-- Small birds flying away (freedom) top corners -->
+  <path d="M100 80 Q115 68 130 80" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M140 60 Q155 48 170 60" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M640 90 Q655 78 670 90" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M670 65 Q685 53 700 65" fill="none" stroke="#888" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

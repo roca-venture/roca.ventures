@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#F0EDE5"/>
+  <!-- Zen circle (enso) -->
+  <circle cx="400" cy="300" r="200" fill="none" stroke="#2A2A2A" stroke-width="28" stroke-linecap="round" stroke-dasharray="1100 200" transform="rotate(-120 400 300)" opacity="0.85"/>
+  <!-- Turtle silhouette (slow but steady) -->
+  <!-- Shell -->
+  <ellipse cx="400" cy="300" r="70" ry="48" fill="#5A7A5A"/>
+  <!-- Shell pattern -->
+  <polygon points="400,258 430,275 430,315 400,332 370,315 370,275" fill="none" stroke="#3A5A3A" stroke-width="2"/>
+  <line x1="400" y1="258" x2="400" y2="332" stroke="#3A5A3A" stroke-width="1.5"/>
+  <line x1="370" y1="275" x2="430" y2="315" stroke="#3A5A3A" stroke-width="1.5"/>
+  <line x1="430" y1="275" x2="370" y2="315" stroke="#3A5A3A" stroke-width="1.5"/>
+  <!-- Head -->
+  <ellipse cx="468" cy="294" rx="22" ry="18" fill="#6A8A6A"/>
+  <!-- Eye -->
+  <circle cx="476" cy="289" r="4" fill="#2A2A2A"/>
+  <circle cx="477" cy="288" r="1.5" fill="white"/>
+  <!-- Legs -->
+  <ellipse cx="365" cy="268" rx="18" ry="10" fill="#6A8A6A" transform="rotate(-30 365 268)"/>
+  <ellipse cx="365" cy="332" rx="18" ry="10" fill="#6A8A6A" transform="rotate(30 365 332)"/>
+  <ellipse cx="435" cy="268" rx="18" ry="10" fill="#6A8A6A" transform="rotate(30 435 268)"/>
+  <ellipse cx="435" cy="332" rx="18" ry="10" fill="#6A8A6A" transform="rotate(-30 435 332)"/>
+  <!-- Tail -->
+  <path d="M333 300 Q315 298 305 302" stroke="#6A8A6A" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <!-- Small footprints trail -->
+  <ellipse cx="160" cy="420" rx="8" ry="5" fill="#C8C0B0" transform="rotate(-20 160 420)"/>
+  <ellipse cx="190" cy="435" rx="8" ry="5" fill="#C8C0B0" transform="rotate(15 190 435)"/>
+  <ellipse cx="225" cy="425" rx="8" ry="5" fill="#C8C0B0" transform="rotate(-10 225 425)"/>
+  <ellipse cx="258" cy="438" rx="8" ry="5" fill="#C8C0B0" transform="rotate(20 258 438)"/>
+</svg>

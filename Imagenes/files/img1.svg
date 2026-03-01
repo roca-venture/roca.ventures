@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#1A1A2E"/>
+  <!-- Stars -->
+  <circle cx="100" cy="80" r="1.5" fill="white" opacity="0.6"/>
+  <circle cx="200" cy="40" r="1" fill="white" opacity="0.4"/>
+  <circle cx="350" cy="60" r="2" fill="white" opacity="0.5"/>
+  <circle cx="500" cy="30" r="1.5" fill="white" opacity="0.7"/>
+  <circle cx="650" cy="90" r="1" fill="white" opacity="0.4"/>
+  <circle cx="720" cy="50" r="2" fill="white" opacity="0.6"/>
+  <circle cx="60" cy="150" r="1" fill="white" opacity="0.3"/>
+  <circle cx="760" cy="130" r="1.5" fill="white" opacity="0.5"/>
+  <!-- Rocket body -->
+  <path d="M400 80 Q430 120 435 280 L365 280 Q370 120 400 80 Z" fill="#E8E8E0"/>
+  <!-- Rocket window -->
+  <circle cx="400" cy="200" r="28" fill="#1A1A2E" stroke="#A8D9BE" stroke-width="4"/>
+  <circle cx="400" cy="200" r="18" fill="#2A3A4E" stroke="#A8D9BE" stroke-width="2"/>
+  <!-- Rocket fins -->
+  <path d="M365 280 Q340 320 330 360 L365 340 Z" fill="#C8C8C0"/>
+  <path d="M435 280 Q460 320 470 360 L435 340 Z" fill="#C8C8C0"/>
+  <!-- Melting effect - rocket dripping -->
+  <path d="M365 340 Q360 370 355 400 Q358 430 370 450 Q385 470 400 480 Q415 470 430 450 Q442 430 445 400 Q440 370 435 340 L365 340 Z" fill="#E8E8E0" opacity="0.85"/>
+  <!-- Drips -->
+  <path d="M375 480 Q374 510 373 530" stroke="#E8E8E0" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.7"/>
+  <path d="M400 480 Q400 515 400 540" stroke="#E8E8E0" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.8"/>
+  <path d="M425 478 Q427 508 428 525" stroke="#E8E8E0" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.6"/>
+  <circle cx="373" cy="535" r="7" fill="#E8E8E0" opacity="0.6"/>
+  <circle cx="400" cy="545" r="9" fill="#E8E8E0" opacity="0.7"/>
+  <circle cx="429" cy="529" r="6" fill="#E8E8E0" opacity="0.5"/>
+  <!-- Flame (small, at bottom) -->
+  <path d="M375 340 Q370 355 380 360 Q390 358 400 370 Q410 358 420 360 Q430 355 425 340 Z" fill="#FF8C42" opacity="0.6"/>
+</svg>

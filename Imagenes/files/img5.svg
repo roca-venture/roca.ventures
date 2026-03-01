@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#1C2B3A"/>
+  <!-- Ocean waves background -->
+  <path d="M0 400 Q100 370 200 400 Q300 430 400 400 Q500 370 600 400 Q700 430 800 400 L800 600 L0 600 Z" fill="#162436" opacity="0.8"/>
+  <path d="M0 430 Q100 405 200 430 Q300 455 400 430 Q500 405 600 430 Q700 455 800 430 L800 600 L0 600 Z" fill="#0F1E2E" opacity="0.9"/>
+  <!-- Cliff/diving board -->
+  <rect x="50" y="240" width="360" height="20" rx="4" fill="#8B7355"/>
+  <rect x="50" y="200" width="40" height="60" rx="4" fill="#8B7355"/>
+  <!-- Person on edge -->
+  <circle cx="400" cy="198" r="22" fill="#F5E8D0"/>
+  <path d="M388 220 Q382 260 380 290" stroke="#F5E8D0" stroke-width="14" stroke-linecap="round" fill="none"/>
+  <path d="M388 235 Q365 245 345 240" stroke="#F5E8D0" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <path d="M395 235 Q415 228 430 232" stroke="#F5E8D0" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <path d="M380 290 Q372 315 368 330" stroke="#F5E8D0" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <path d="M384 290 Q388 318 392 330" stroke="#F5E8D0" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <!-- Arrow pointing down (one way) -->
+  <line x1="580" y1="160" x2="580" y2="380" stroke="#A8D9BE" stroke-width="4" stroke-dasharray="10,6"/>
+  <path d="M560 370 L580 400 L600 370" fill="#A8D9BE"/>
+  <!-- No return symbol -->
+  <line x1="560" y1="200" x2="530" y2="200" stroke="#CC4A2A" stroke-width="4" stroke-linecap="round"/>
+  <path d="M545 185 L530 200 L545 215" fill="none" stroke="#CC4A2A" stroke-width="4" stroke-linecap="round"/>
+  <line x1="545" y1="200" x2="545" y2="200" stroke="#CC4A2A" stroke-width="8" stroke-linecap="round"/>
+  <!-- Stars reflection in water -->
+  <circle cx="200" cy="500" r="2" fill="white" opacity="0.3"/>
+  <circle cx="350" cy="520" r="1.5" fill="white" opacity="0.2"/>
+  <circle cx="550" cy="510" r="2" fill="white" opacity="0.3"/>
+  <circle cx="680" cy="490" r="1.5" fill="white" opacity="0.25"/>
+</svg>

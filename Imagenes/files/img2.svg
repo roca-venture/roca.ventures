@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#F5F0E8"/>
+  <!-- Grid lines subtle -->
+  <line x1="0" y1="150" x2="800" y2="150" stroke="#E0D8CC" stroke-width="1"/>
+  <line x1="0" y1="300" x2="800" y2="300" stroke="#E0D8CC" stroke-width="1"/>
+  <line x1="0" y1="450" x2="800" y2="450" stroke="#E0D8CC" stroke-width="1"/>
+  <line x1="200" y1="0" x2="200" y2="600" stroke="#E0D8CC" stroke-width="1"/>
+  <line x1="400" y1="0" x2="400" y2="600" stroke="#E0D8CC" stroke-width="1"/>
+  <line x1="600" y1="0" x2="600" y2="600" stroke="#E0D8CC" stroke-width="1"/>
+  <!-- Large circle brain outline -->
+  <circle cx="400" cy="280" r="180" fill="none" stroke="#2A2A2A" stroke-width="3"/>
+  <!-- Brain folds suggestion -->
+  <path d="M260 220 Q290 180 340 200 Q370 215 360 250 Q350 280 380 290 Q410 300 400 330 Q390 360 420 370" fill="none" stroke="#2A2A2A" stroke-width="2.5"/>
+  <path d="M440 180 Q480 170 510 200 Q530 225 510 250 Q490 270 510 295 Q530 318 510 340" fill="none" stroke="#2A2A2A" stroke-width="2.5"/>
+  <path d="M300 320 Q280 350 300 375 Q320 395 360 385 Q390 375 400 395" fill="none" stroke="#2A2A2A" stroke-width="2.5"/>
+  <!-- Gear 1 -->
+  <g transform="translate(580 160) rotate(15)">
+    <circle r="45" fill="#A8D9BE" stroke="#2A2A2A" stroke-width="2"/>
+    <circle r="28" fill="#F5F0E8" stroke="#2A2A2A" stroke-width="2"/>
+    <rect x="-8" y="-52" width="16" height="14" rx="3" fill="#A8D9BE" stroke="#2A2A2A" stroke-width="1.5"/>
+    <rect x="-8" y="38" width="16" height="14" rx="3" fill="#A8D9BE" stroke="#2A2A2A" stroke-width="1.5"/>
+    <rect x="38" y="-8" width="14" height="16" rx="3" fill="#A8D9BE" stroke="#2A2A2A" stroke-width="1.5"/>
+    <rect x="-52" y="-8" width="14" height="16" rx="3" fill="#A8D9BE" stroke="#2A2A2A" stroke-width="1.5"/>
+  </g>
+  <!-- Gear 2 small -->
+  <g transform="translate(200 420) rotate(-10)">
+    <circle r="32" fill="#E8C4A0" stroke="#2A2A2A" stroke-width="2"/>
+    <circle r="18" fill="#F5F0E8" stroke="#2A2A2A" stroke-width="2"/>
+    <rect x="-6" y="-38" width="12" height="10" rx="2" fill="#E8C4A0" stroke="#2A2A2A" stroke-width="1.5"/>
+    <rect x="-6" y="28" width="12" height="10" rx="2" fill="#E8C4A0" stroke="#2A2A2A" stroke-width="1.5"/>
+    <rect x="28" y="-6" width="10" height="12" rx="2" fill="#E8C4A0" stroke="#2A2A2A" stroke-width="1.5"/>
+    <rect x="-38" y="-6" width="10" height="12" rx="2" fill="#E8C4A0" stroke="#2A2A2A" stroke-width="1.5"/>
+  </g>
+  <!-- X mark (productivity myth) -->
+  <line x1="370" y1="255" x2="430" y2="315" stroke="#CC4A2A" stroke-width="8" stroke-linecap="round"/>
+  <line x1="430" y1="255" x2="370" y2="315" stroke="#CC4A2A" stroke-width="8" stroke-linecap="round"/>
+</svg>
