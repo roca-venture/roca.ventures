@@ -184,13 +184,13 @@
 <body>
 
   <nav class="barra">
-    <a href="index.html" class="logo">roca <em>ventures</em></a>
+    <a href="/" class="logo">roca <em>ventures</em></a>
     <a class="enlace" href="ensayos.html">Ensayos</a>
     <a class="enlace" href="acerca.html">Acerca</a>
     <a class="enlace" href="inversiones.html">Inversiones</a>
   </nav>
 
-  <div class="reloj-flotante"><span class="tenue">La gota cae en CDMX a las</span> <span id="reloj">—</span></div>
+  <div class="reloj-flotante" id="lluvia"><span class="tenue">Buscando lluvia</span> <span id="reloj">—</span></div>
 
   <div class="cita-panel">
     <p class="frase">"Somos roca<br>en movimiento."</p>
@@ -306,16 +306,87 @@
         }
       }, { passive: true });
 
-      /* Reloj: hora de Ciudad de México, formato 12h */
-      var el = document.getElementById('reloj');
-      function tic() {
-        var hora = new Intl.DateTimeFormat('es-MX', {
-          timeZone: 'America/Mexico_City',
-          hour: 'numeric', minute: '2-digit', hour12: true
-        }).format(new Date());
-        el.textContent = hora.replace(' a.m.', 'am').replace(' p.m.', 'pm').replace('a. m.', 'am').replace('p. m.', 'pm').replace(/\s+/g, '');
+      /* ——— ¿Dónde está lloviendo ahora mismo? ———
+         Consulta Open-Meteo (gratuita, sin clave) sobre ciudades lluviosas
+         del mundo y muestra la primera donde llueve, con su hora local. */
+      var CIUDADES = [
+        { n: 'Bergen',        lat: 60.39,  lon: 5.32,    tz: 'Europe/Oslo' },
+        { n: 'Londres',       lat: 51.51,  lon: -0.13,   tz: 'Europe/London' },
+        { n: 'Vancouver',     lat: 49.28,  lon: -123.12, tz: 'America/Vancouver' },
+        { n: 'Seattle',       lat: 47.61,  lon: -122.33, tz: 'America/Los_Angeles' },
+        { n: 'Bogotá',        lat: 4.71,   lon: -74.07,  tz: 'America/Bogota' },
+        { n: 'Singapur',      lat: 1.35,   lon: 103.82,  tz: 'Asia/Singapore' },
+        { n: 'Bombay',        lat: 19.08,  lon: 72.88,   tz: 'Asia/Kolkata' },
+        { n: 'Tokio',         lat: 35.68,  lon: 139.69,  tz: 'Asia/Tokyo' },
+        { n: 'Auckland',      lat: -36.85, lon: 174.76,  tz: 'Pacific/Auckland' },
+        { n: 'Dublín',        lat: 53.35,  lon: -6.26,   tz: 'Europe/Dublin' },
+        { n: 'Reikiavik',     lat: 64.15,  lon: -21.94,  tz: 'Atlantic/Reykjavik' },
+        { n: 'Hong Kong',     lat: 22.32,  lon: 114.17,  tz: 'Asia/Hong_Kong' },
+        { n: 'Kuala Lumpur',  lat: 3.14,   lon: 101.69,  tz: 'Asia/Kuala_Lumpur' },
+        { n: 'Taipéi',        lat: 25.03,  lon: 121.57,  tz: 'Asia/Taipei' },
+        { n: 'Manila',        lat: 14.60,  lon: 120.98,  tz: 'Asia/Manila' },
+        { n: 'Ámsterdam',     lat: 52.37,  lon: 4.90,    tz: 'Europe/Amsterdam' },
+        { n: 'São Paulo',     lat: -23.55, lon: -46.63,  tz: 'America/Sao_Paulo' },
+        { n: 'Ciudad de México', lat: 19.43, lon: -99.13, tz: 'America/Mexico_City' },
+        { n: 'Glasgow',       lat: 55.86,  lon: -4.25,   tz: 'Europe/London' },
+        { n: 'Cartagena',     lat: 10.39,  lon: -75.51,  tz: 'America/Bogota' }
+      ];
+
+      /* Códigos de Open-Meteo que significan lluvia (llovizna, lluvia,
+         chubascos o tormenta) */
+      function esLluvia(codigo) {
+        return (codigo >= 51 && codigo <= 67) || (codigo >= 80 && codigo <= 82) || (codigo >= 95 && codigo <= 99);
       }
-      tic(); setInterval(tic, 15000);
+
+      var etiqueta = document.querySelector('#lluvia .tenue');
+      var el = document.getElementById('reloj');
+      var lugarActual = null;
+
+      function horaLocal(tz) {
+        var hora = new Intl.DateTimeFormat('es-MX', {
+          timeZone: tz, hour: 'numeric', minute: '2-digit', hour12: true
+        }).format(new Date());
+        return hora.replace(/\s*[ap]\.?\s?m\.?/i, function (m) {
+          return m.toLowerCase().indexOf('a') > -1 ? 'am' : 'pm';
+        }).replace(/\s+/g, '');
+      }
+
+      function tic() {
+        if (lugarActual) {
+          etiqueta.textContent = 'Está lloviendo en ' + lugarActual.n + ' a las';
+          el.textContent = horaLocal(lugarActual.tz);
+        } else {
+          /* Todavía sin datos, o ningún lugar con lluvia: cae la gota en CDMX */
+          etiqueta.textContent = 'La gota cae en CDMX a las';
+          el.textContent = horaLocal('America/Mexico_City');
+        }
+      }
+
+      function buscarLluvia() {
+        var lats = CIUDADES.map(function (c) { return c.lat; }).join(',');
+        var lons = CIUDADES.map(function (c) { return c.lon; }).join(',');
+        fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lats +
+              '&longitude=' + lons + '&current=weather_code')
+          .then(function (r) { return r.json(); })
+          .then(function (datos) {
+            var lista = Array.isArray(datos) ? datos : [datos];
+            var lloviendo = [];
+            lista.forEach(function (d, i) {
+              if (d && d.current && esLluvia(d.current.weather_code)) lloviendo.push(CIUDADES[i]);
+            });
+            /* Elige una al azar entre las que llueve, para variar entre visitas */
+            lugarActual = lloviendo.length
+              ? lloviendo[Math.floor(Math.random() * lloviendo.length)]
+              : null;
+            tic();
+          })
+          .catch(function () { lugarActual = null; tic(); });
+      }
+
+      tic();
+      buscarLluvia();
+      setInterval(tic, 30000);            /* hora al minuto */
+      setInterval(buscarLluvia, 900000);  /* clima cada 15 min */
     })();
   </script>
 
