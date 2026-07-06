@@ -1,0 +1,336 @@
+/* roca.ventures — La gota horada la roca */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #FAF9F5;
+  --ink: #1C1B18;
+  --stone: #6E6A60;
+  --faint: #A8A49A;
+  --line: #E6E3DB;
+  --accent: #5C5A47; /* verde oliva piedra */
+  --serif: 'EB Garamond', Georgia, serif;
+  --sans: 'DM Sans', -apple-system, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+::selection { background: var(--accent); color: var(--bg); }
+
+.wrap {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 6vw, 3rem);
+}
+
+/* ——Roca—Río motif */
+.motivo {
+  font-family: var(--serif);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+  text-align: center;
+  padding: 1.6rem 0;
+  user-select: none;
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 2.2rem clamp(1.5rem, 6vw, 3rem) 2rem;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  letter-spacing: -0.01em;
+}
+
+.logo em { font-style: italic; color: var(--stone); }
+
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+
+.nav-links a {
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  color: var(--stone);
+  border-bottom: 1px solid transparent;
+  transition: color 0.25s, border-color 0.25s;
+  padding-bottom: 2px;
+}
+
+.nav-links a:hover, .nav-links a.activa { color: var(--ink); border-color: var(--ink); }
+
+/* Opening statement */
+.apertura {
+  padding: clamp(4rem, 12vh, 8rem) 0 clamp(3rem, 8vh, 5rem);
+}
+
+.apertura h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5vw, 2.9rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  max-width: 15em;
+}
+
+.apertura h1 em { font-style: italic; }
+
+/* Quote — load-bearing, on every page */
+.cita {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--stone);
+  text-align: center;
+  max-width: 26em;
+  margin: 0 auto;
+  padding: clamp(3rem, 8vh, 5rem) 1.5rem;
+  line-height: 1.5;
+}
+
+.cita span {
+  display: block;
+  font-family: var(--sans);
+  font-style: normal;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-top: 1rem;
+}
+
+/* Essay index */
+.ensayos { border-top: 1px solid var(--line); }
+
+.ensayo {
+  display: flex;
+  align-items: baseline;
+  gap: 1.6rem;
+  padding: 1.7rem 0;
+  border-bottom: 1px solid var(--line);
+  transition: padding-left 0.3s ease;
+}
+
+.ensayo:hover { padding-left: 0.6rem; }
+
+.ensayo .num {
+  font-family: var(--serif);
+  font-size: 0.9rem;
+  color: var(--faint);
+  min-width: 2.4rem;
+  font-variant-numeric: oldstyle-nums;
+}
+
+.ensayo .titulo {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.2rem, 2.6vw, 1.5rem);
+  line-height: 1.3;
+  flex: 1;
+}
+
+.ensayo .fecha {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+/* Subscribe */
+.suscribir { padding: clamp(3.5rem, 9vh, 6rem) 0; }
+
+.suscribir h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.suscribir p {
+  font-size: 0.88rem;
+  color: var(--stone);
+  margin-bottom: 1.6rem;
+  max-width: 32em;
+}
+
+.sub-form { display: flex; max-width: 420px; border-bottom: 1px solid var(--ink); }
+
+.sub-form input {
+  flex: 1;
+  padding: 0.7rem 0;
+  border: none;
+  background: transparent;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  outline: none;
+  color: var(--ink);
+}
+
+.sub-form input::placeholder { color: var(--faint); }
+
+.sub-form button {
+  background: none;
+  border: none;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: var(--ink);
+  padding: 0.7rem 0 0.7rem 1rem;
+  transition: opacity 0.2s;
+}
+
+.sub-form button:hover { opacity: 0.55; }
+
+/* Footer */
+footer {
+  border-top: 1px solid var(--line);
+  padding: 2.2rem clamp(1.5rem, 6vw, 3rem) 1rem;
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--faint);
+}
+
+.reloj { font-variant-numeric: tabular-nums; letter-spacing: 0.05em; }
+
+/* Letter page */
+.carta { padding: clamp(3rem, 8vh, 5rem) 0; }
+
+.carta h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 4.5vw, 2.4rem);
+  margin-bottom: 3rem;
+  line-height: 1.25;
+}
+
+.carta section { margin-bottom: 3rem; }
+
+.carta .romano {
+  font-family: var(--serif);
+  font-size: 1rem;
+  letter-spacing: 0.25em;
+  color: var(--faint);
+  display: block;
+  margin-bottom: 1.2rem;
+}
+
+.carta p {
+  font-family: var(--serif);
+  font-size: 1.12rem;
+  line-height: 1.75;
+  margin-bottom: 1.3rem;
+  color: var(--ink);
+}
+
+.carta .firma {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.3rem;
+  margin-top: 3rem;
+  color: var(--stone);
+}
+
+/* Concrete list (inversiones) */
+.concreto { list-style: none; border-top: 1px solid var(--line); margin-top: 2rem; }
+
+.concreto li {
+  font-family: var(--serif);
+  font-size: 1.08rem;
+  line-height: 1.6;
+  padding: 1.3rem 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.concreto li span { color: var(--faint); font-size: 0.95rem; }
+
+/* Article */
+.articulo { padding: clamp(3rem, 8vh, 5rem) 0; }
+
+.articulo .meta {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 1.4rem;
+}
+
+.articulo h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 5vw, 2.6rem);
+  line-height: 1.25;
+  margin-bottom: 2.5rem;
+}
+
+.articulo p {
+  font-family: var(--serif);
+  font-size: 1.14rem;
+  line-height: 1.78;
+  margin-bottom: 1.4rem;
+}
+
+.articulo .volver {
+  display: inline-block;
+  margin-top: 2.5rem;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--stone);
+  border-bottom: 1px solid var(--line);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.articulo .volver:hover { color: var(--ink); border-color: var(--ink); }
+
+/* Fade-in */
+@keyframes surgir { to { opacity: 1; transform: translateY(0); } }
+
+.surge {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: surgir 0.7s ease forwards;
+}
+
+.surge:nth-child(2) { animation-delay: 0.08s; }
+.surge:nth-child(3) { animation-delay: 0.16s; }
+.surge:nth-child(4) { animation-delay: 0.24s; }
+.surge:nth-child(5) { animation-delay: 0.32s; }
+.surge:nth-child(6) { animation-delay: 0.40s; }
+.surge:nth-child(7) { animation-delay: 0.48s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .surge { opacity: 1; transform: none; animation: none; }
+  .ensayo:hover { padding-left: 0; }
+}
+
+@media (max-width: 560px) {
+  .nav-links { gap: 1.2rem; }
+  .ensayo { flex-wrap: wrap; gap: 0.6rem 1.2rem; }
+  .ensayo .fecha { width: 100%; padding-left: 3.6rem; }
+  footer { flex-direction: column; text-align: center; align-items: center; }
+}

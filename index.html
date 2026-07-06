@@ -3,255 +3,321 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>roca.ventures</title>
+  <title>Movimiento</title>
+  <meta name="description" content="roca.ventures — La gota horada la roca, no por su fuerza, sino por su constancia."/>
   <link rel="icon" type="image/png" href="apple-touch-icon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #FAFAF8;
-      --ink: #111;
-      --muted: #999;
-      --border: #E8E8E4;
+      --bg: #F1EFE7;
+      --ink: #1C1B18;
+      --stone: #6E6A60;
+      --faint: #A8A49A;
+      --line: #DDDACF;
+      --serif: 'EB Garamond', Georgia, serif;
+      --sans: 'DM Sans', -apple-system, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-width: none;       /* Firefox: sin barra de scroll */
+      -ms-overflow-style: none;
+    }
+
+    html::-webkit-scrollbar, body::-webkit-scrollbar {
+      display: none;               /* Chrome/Safari: sin barra de scroll */
     }
 
     body {
       background: var(--bg);
       color: var(--ink);
-      font-family: 'DM Sans', sans-serif;
+      font-family: var(--sans);
       font-weight: 300;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    a { text-decoration: none; color: inherit; }
+    a { color: inherit; text-decoration: none; }
+    ::selection { background: var(--stone); color: var(--bg); }
 
-    nav {
+    /* ——— Barra píldora centrada ——— */
+    .barra {
+      position: fixed;
+      top: 1.6rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 2rem clamp(1.5rem, 6vw, 4rem);
-      border-bottom: 1px solid var(--border);
+      gap: clamp(1.2rem, 3vw, 2.6rem);
+      padding: 1rem 1.6rem;
+      background: rgba(241, 239, 231, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--line);
+      white-space: nowrap;
     }
 
-    .nav-logo {
-      font-family: 'EB Garamond', serif;
-      font-size: 1.4rem;
-      letter-spacing: -0.01em;
+    .barra .logo {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      letter-spacing: 0.02em;
+      margin-right: clamp(0.6rem, 2vw, 2rem);
     }
 
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .barra .logo em { font-style: italic; color: var(--stone); }
 
-    .nav-links a {
-      font-size: 0.82rem;
-      color: var(--muted);
-      transition: color 0.2s;
+    .barra a.enlace {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--stone);
+      transition: color 0.25s;
     }
 
-    .nav-links a:hover { color: var(--ink); }
+    .barra a.enlace:hover { color: var(--ink); }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      border-top: 1px solid var(--border);
+    /* ——— Reloj esquina superior derecha ——— */
+    .reloj-flotante {
+      position: fixed;
+      top: 2.4rem;
+      right: 2rem;
+      z-index: 21;
+      font-size: 0.72rem;
+      letter-spacing: 0.03em;
+      color: var(--stone);
+      background: rgba(241, 239, 231, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 0.5rem 0.9rem;
+      border: 1px solid var(--line);
     }
 
-    .card {
-      background: var(--bg);
-      cursor: pointer;
-      transition: background 0.2s;
-      opacity: 0;
-      transform: translateY(16px);
-      animation: fadeUp 0.5s ease forwards;
-    }
+    .reloj-flotante .tenue { color: var(--faint); }
 
-    .card:hover { background: #F3F3EF; }
-    .card:nth-child(1) { animation-delay: 0.05s; }
-    .card:nth-child(2) { animation-delay: 0.1s; }
-    .card:nth-child(3) { animation-delay: 0.15s; }
-    .card:nth-child(4) { animation-delay: 0.2s; }
-    .card:nth-child(5) { animation-delay: 0.25s; }
-    .card:nth-child(6) { animation-delay: 0.3s; }
-
-    .card-img {
+    /* ——— Collage ——— */
+    #collage {
+      position: relative;
       width: 100%;
-      aspect-ratio: 4/3;
-      object-fit: cover;
-      display: block;
+      padding: 16vh 0 20vh;
     }
 
-    .card-body { padding: 1.4rem 1.6rem 1.8rem; }
-
-    .card-meta {
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-bottom: 0.6rem;
+    /* Cada vuelta es un lienzo alto; los fotogramas se colocan en
+       posiciones absolutas aleatorias dentro de él (x e y al azar) */
+    .vuelta {
+      position: relative;
+      width: 100%;
     }
 
-    .card-title {
-      font-family: 'EB Garamond', serif;
-      font-size: 1.35rem;
-      line-height: 1.3;
+    .fotograma {
+      position: absolute;
+      opacity: 0;
+      transform: translateY(34px);
+      transition: opacity 1.2s ease, transform 1.2s ease;
+    }
+
+    .fotograma.visible { opacity: 1; transform: translateY(0); }
+
+    .pastel { display: block; width: 100%; height: 100%; }
+
+    /* La posición horizontal de cada fotograma es aleatoria (se asigna por JS) */
+
+    /* ——— Cita fija al centro: los pasteles se mueven detrás ——— */
+    .cita-panel {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(46vw, 560px);
+      padding: clamp(4rem, 9vh, 7rem) clamp(2rem, 4vw, 4rem);
+      text-align: center;
+      background: rgba(241, 239, 231, 0.55);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .cita-panel .frase {
+      font-family: var(--serif);
       font-weight: 400;
-    }
-
-    .subscribe {
-      padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 6vw, 4rem);
-      border-top: 1px solid var(--border);
-      max-width: 480px;
-    }
-
-    .subscribe h2 {
-      font-family: 'EB Garamond', serif;
-      font-size: 1.8rem;
-      margin-bottom: 0.6rem;
-      font-weight: 400;
-    }
-
-    .subscribe p {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-bottom: 1.5rem;
-      line-height: 1.6;
-    }
-
-    .sub-form {
-      display: flex;
-      border: 1px solid var(--ink);
-    }
-
-    .sub-form input {
-      flex: 1;
-      padding: 0.75rem 1rem;
-      border: none;
-      background: transparent;
-      font-family: inherit;
-      font-size: 0.85rem;
-      outline: none;
+      font-size: 28px;          /* mismo cuerpo que la cita de referencia */
+      line-height: 1.45;
       color: var(--ink);
+      margin: 0 auto;
     }
 
-    .sub-form input::placeholder { color: var(--muted); }
-
-    .sub-form button {
-      padding: 0.75rem 1.4rem;
-      background: var(--ink);
-      color: var(--bg);
-      border: none;
-      font-family: inherit;
-      font-size: 0.82rem;
-      cursor: pointer;
-      letter-spacing: 0.05em;
-      transition: opacity 0.2s;
+    @media (max-width: 700px) {
+      .cita-panel .frase { font-size: 22px; }
     }
 
-    .sub-form button:hover { opacity: 0.75; }
-
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 1.8rem clamp(1.5rem, 6vw, 4rem);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.78rem;
-      color: var(--muted);
+    /* ——— Motivo de cierre de vuelta ——— */
+    .motivo-vuelta {
+      text-align: center;
+      font-family: var(--serif);
+      font-size: 0.9rem;
+      letter-spacing: 0.12em;
+      color: var(--faint);
+      padding: 16vh 0 4vh;
+      opacity: 0;
+      transition: opacity 1.2s ease;
     }
 
-    .footer-links { display: flex; gap: 1.5rem; }
-    .footer-links a { color: var(--muted); transition: color 0.2s; }
-    .footer-links a:hover { color: var(--ink); }
+    .motivo-vuelta.visible { opacity: 1; }
 
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) {
+      .fotograma, .cita-panel, .motivo-vuelta { opacity: 1; transform: none; transition: none; }
     }
 
-    @media (max-width: 600px) {
-      .grid { grid-template-columns: 1fr; }
-      .nav-links { gap: 1.2rem; }
-      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    @media (max-width: 700px) {
+      .cita-panel { width: 84vw; }
+      .reloj-flotante { display: none; }
+      .barra { gap: 1rem; padding: 0.8rem 1.1rem; }
+      .barra .logo { font-size: 1.05rem; }
     }
   </style>
 </head>
 <body>
 
-  <nav>
-    <a href="/" class="nav-logo">roca.ventures</a>
-    <ul class="nav-links">
-      <a href="#">Artículos</a>
-      <a href="#">Acerca</a>
-    </ul>
+  <nav class="barra">
+    <a href="index.html" class="logo">roca <em>ventures</em></a>
+    <a class="enlace" href="ensayos.html">Ensayos</a>
+    <a class="enlace" href="acerca.html">Acerca</a>
+    <a class="enlace" href="inversiones.html">Inversiones</a>
   </nav>
 
-  <main class="grid">
+  <div class="reloj-flotante"><span class="tenue">La gota cae en CDMX a las</span> <span id="reloj">—</span></div>
 
-    <article class="card">
-      <img src="images/img1.svg" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;"/>
-      <div class="card-body">
-        <p class="card-meta">28/02/26</p>
-        <h2 class="card-title">Por qué la mayoría de los startups mueren de éxito, no de fracaso</h2>
-      </div>
-    </article>
+  <div class="cita-panel">
+    <p class="frase">"Somos roca<br>en movimiento."</p>
+  </div>
 
-    <article class="card">
-      <img src="images/img2.svg" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;"/>
-      <div class="card-body">
-        <p class="card-meta">15/02/26</p>
-        <h2 class="card-title">El mito de la productividad con IA</h2>
-      </div>
-    </article>
-
-    <article class="card">
-      <img src="images/img3.svg" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;"/>
-      <div class="card-body">
-        <p class="card-meta">02/02/26</p>
-        <h2 class="card-title">Construir en público sin perder la cabeza</h2>
-      </div>
-    </article>
-
-    <article class="card">
-      <img src="images/img4.svg" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;"/>
-      <div class="card-body">
-        <p class="card-meta">18/01/26</p>
-        <h2 class="card-title">Cuando el capital de riesgo se convierte en trampa</h2>
-      </div>
-    </article>
-
-    <article class="card">
-      <img src="images/img5.svg" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;"/>
-      <div class="card-body">
-        <p class="card-meta">05/01/26</p>
-        <h2 class="card-title">El precio real de las decisiones irreversibles</h2>
-      </div>
-    </article>
-
-    <article class="card">
-      <img src="images/img6.svg" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block;"/>
-      <div class="card-body">
-        <p class="card-meta">20/12/25</p>
-        <h2 class="card-title">Lento es suave, suave es rápido</h2>
-      </div>
-    </article>
-
+  <main id="collage" aria-label="Collage">
+    <!-- Fotogramas generados por JS; el ciclo de 32 se repite al infinito -->
   </main>
 
-  <section class="subscribe">
-    <h2>roca.ventures newsletter</h2>
-    <p>Regístrate para recibir los próximos artículos directo en tu correo.</p>
-    <div class="sub-form">
-      <input type="email" placeholder="tu@correo.com"/>
-      <button>Suscribirse</button>
-    </div>
-  </section>
+  <script>
+    (function () {
+      /* ——— 32 pasteles ———
+         Para sustituir uno por fotografía: cambia el color por
+         { img: 'images/tu-foto.avif' } y el bloque usará <img>. */
+      var PASTELES = [
+        '#E7D3CB', '#CFDCD2', '#DED4E6', '#EBDCC0', '#C9D8E5', '#E5CFDA',
+        '#D3DEC4', '#E8D2BC', '#C7D4E0', '#E3D8C6', '#D2E0DC', '#EAD0CE',
+        '#D8D3E4', '#E0DEC4', '#CCD8CC', '#EBD6CF', '#CADCE0', '#E6D5BE',
+        '#DACDDE', '#D3E0CE', '#E9D2C3', '#CDD8E4', '#E1D5D2', '#D6DEC8',
+        '#E7CED6', '#CBDAD5', '#E4D9BE', '#D1D3E2', '#ECD6C8', '#CEDDD1',
+        '#DFD0E1', '#DDD9C2'
+      ];
 
-  <footer>
-    <a href="/" class="nav-logo">roca.ventures</a>
-    <div class="footer-links">
-      <a href="#">Artículos</a>
-      <a href="#">Acerca</a>
-    </div>
-  </footer>
+      var collage = document.getElementById('collage');
+
+      var observador = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('visible'); observador.unobserve(e.target); }
+        });
+      }, { threshold: 0.12 });
+
+      /* Tamaños posibles (ancho en vw, proporción) — se combinan al azar */
+      var TAMANOS = [
+        { w: 34, ar: '4/5' },  { w: 26, ar: '3/4' },  { w: 15, ar: '4/3' },
+        { w: 30, ar: '4/3' },  { w: 20, ar: '3/4' },  { w: 24, ar: '4/5' },
+        { w: 30, ar: '5/4' },  { w: 16, ar: '4/3' }
+      ];
+
+      function alAzar(min, max) { return min + Math.random() * (max - min); }
+
+      /* Altura media (en vh) que ocupa cada fotograma dentro del lienzo */
+      var PASO = 42;
+
+      function fotograma(i, slot) {
+        var d = document.createElement('div');
+        d.className = 'fotograma';
+        var t = TAMANOS[Math.floor(Math.random() * TAMANOS.length)];
+        /* En pantallas angostas los bloques se agrandan para seguir leyéndose */
+        var ancho = window.innerWidth < 700 ? Math.min(t.w * 2.2, 86) : t.w;
+        /* Horizontal: totalmente al azar, de borde a borde */
+        var izq = alAzar(-3, 100 - ancho + 3);
+        /* Vertical: franja del slot + desvío aleatorio, para que varios
+           bloques convivan a la misma altura sin huecos enormes ni zigzag */
+        var arriba = slot * PASO + alAzar(-14, 14);
+        d.style.width = ancho + 'vw';
+        d.style.aspectRatio = t.ar;
+        d.style.left = izq + 'vw';
+        d.style.top = arriba + 'vh';
+        var item = PASTELES[i];
+        if (typeof item === 'object' && item.img) {
+          d.innerHTML = '<img class="pastel" src="' + item.img + '" alt="" style="object-fit:cover;"/>';
+        } else {
+          d.innerHTML = '<div class="pastel" style="background:' + item + ';"></div>';
+        }
+        return d;
+      }
+
+      function motivoVuelta() {
+        var d = document.createElement('div');
+        d.className = 'motivo-vuelta';
+        d.textContent = '——roca—ventures——';
+        return d;
+      }
+
+      /* Baraja los índices para que el orden de los colores también varíe */
+      function barajar(n) {
+        var a = [];
+        for (var i = 0; i < n; i++) a.push(i);
+        for (var j = a.length - 1; j > 0; j--) {
+          var k = Math.floor(Math.random() * (j + 1));
+          var tmp = a[j]; a[j] = a[k]; a[k] = tmp;
+        }
+        return a;
+      }
+
+      function agregarCiclo() {
+        var vuelta = document.createElement('div');
+        vuelta.className = 'vuelta';
+        vuelta.style.height = (32 * PASO + 30) + 'vh';
+        var orden = barajar(32);
+        for (var slot = 0; slot < 32; slot++) {
+          var f = fotograma(orden[slot], slot);
+          vuelta.appendChild(f);
+          observador.observe(f);
+        }
+        collage.appendChild(vuelta);
+        var m = motivoVuelta();
+        collage.appendChild(m);
+        observador.observe(m);
+      }
+
+      agregarCiclo();
+
+      /* Scroll infinito */
+      var cargando = false;
+      window.addEventListener('scroll', function () {
+        if (cargando) return;
+        var falta = document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
+        if (falta < window.innerHeight * 2) {
+          cargando = true;
+          agregarCiclo();
+          cargando = false;
+        }
+      }, { passive: true });
+
+      /* Reloj: hora de Ciudad de México, formato 12h */
+      var el = document.getElementById('reloj');
+      function tic() {
+        var hora = new Intl.DateTimeFormat('es-MX', {
+          timeZone: 'America/Mexico_City',
+          hour: 'numeric', minute: '2-digit', hour12: true
+        }).format(new Date());
+        el.textContent = hora.replace(' a.m.', 'am').replace(' p.m.', 'pm').replace('a. m.', 'am').replace('p. m.', 'pm').replace(/\s+/g, '');
+      }
+      tic(); setInterval(tic, 15000);
+    })();
+  </script>
 
 </body>
 </html>

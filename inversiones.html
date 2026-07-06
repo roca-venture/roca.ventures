@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cómo invertimos — roca.ventures</title>
+  <meta name="description" content="Cómo invierte roca.ventures: temprano, cerca y sin prisa."/>
+  <link rel="icon" type="image/png" href="apple-touch-icon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <div class="motivo">——roca—ventures——</div>
+
+  <nav>
+    <a href="index.html" class="logo">roca<em>.ventures</em></a>
+    <ul class="nav-links">
+      <li><a href="ensayos.html">Ensayos</a></li>
+      <li><a href="acerca.html">Acerca</a></li>
+      <li><a href="inversiones.html" class="activa">Inversiones</a></li>
+    </ul>
+  </nav>
+
+  <main class="wrap">
+    <article class="carta surge">
+      <h1>Invertimos temprano, cerca y sin prisa.</h1>
+
+      <!-- ✏️ PLACEHOLDER: la fuerza de esta página está en lo concreto. Nada de «aportamos valor más allá del capital»: hechos específicos, verificables y hasta poco glamurosos. -->
+
+      <section>
+        <span class="romano">I. — Qué buscamos</span>
+        <p>[Tu criterio en una o dos frases discutibles. Por ejemplo: en qué etapa entras, en qué geografías, qué señales concretas te hacen decir que sí — y cuáles te hacen decir que no.]</p>
+      </section>
+
+      <section>
+        <span class="romano">II. — Cómo trabajamos</span>
+        <p>Cuando estas líneas dejen de ser plantilla, deberían parecerse a esto: cosas pequeñas, reales y comprobables.</p>
+        <ul class="concreto">
+          <li>[Ejemplo del tono: «Presentamos a una fundadora a sus tres primeros clientes.»] <span>— sustituir por un hecho real</span></li>
+          <li>[Ejemplo del tono: «Ayudamos a cerrar la primera contratación con mensajes en frío, uno por uno.»] <span>— sustituir por un hecho real</span></li>
+          <li>[Ejemplo del tono: «Contestamos el teléfono un domingo. Varias veces.»] <span>— sustituir por un hecho real</span></li>
+        </ul>
+      </section>
+
+      <section>
+        <span class="romano">III. — Lo que no somos</span>
+        <p>[El filtro negativo, dicho con elegancia: qué tipo de proyecto o fundador no encaja aquí. Decirlo ahorra tiempo a todos y da más credibilidad que cualquier promesa.]</p>
+      </section>
+
+      <section>
+        <span class="romano">IV. — Escríbenos</span>
+        <p>[Cómo llegar a ti: correo, qué incluir en el primer mensaje, qué pueden esperar como respuesta y en cuánto tiempo. Un compromiso concreto —«contestamos en 48 horas»— vale oro si se cumple.]</p>
+      </section>
+
+      <p class="firma">— roca.ventures</p>
+    </article>
+
+    <blockquote class="cita">
+      «La gota horada la roca, no por su fuerza, sino por su constancia.»
+      <span>A partir de Ovidio</span>
+    </blockquote>
+  </main>
+
+  <footer>
+    <span>roca<em>.ventures</em> — MMXXVI</span>
+    <span class="reloj">El agua cae · <span id="reloj">—</span></span>
+  </footer>
+
+  <div class="motivo">——ventures—roca——</div>
+
+  <script>
+    (function () {
+      var el = document.getElementById('reloj');
+      function tic() {
+        var d = new Date();
+        el.textContent = String(d.getHours()).padStart(2,'0') + ':' +
+                         String(d.getMinutes()).padStart(2,'0') + ':' +
+                         String(d.getSeconds()).padStart(2,'0');
+      }
+      tic(); setInterval(tic, 1000);
+    })();
+  </script>
+
+</body>
+</html>

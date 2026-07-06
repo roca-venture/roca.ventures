@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ensayos — roca.ventures</title>
+  <meta name="description" content="Ensayos de roca.ventures."/>
+  <link rel="icon" type="image/png" href="apple-touch-icon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <div class="motivo">——roca—ventures——</div>
+
+  <nav>
+    <a href="index.html" class="logo">roca<em>.ventures</em></a>
+    <ul class="nav-links">
+      <li><a href="ensayos.html" class="activa">Ensayos</a></li>
+      <li><a href="acerca.html">Acerca</a></li>
+      <li><a href="inversiones.html">Inversiones</a></li>
+    </ul>
+  </nav>
+
+  <main class="wrap">
+
+    <section class="ensayos" aria-label="Ensayos" style="margin-top:3rem;">
+      <a class="ensayo surge" href="articulo.html">
+        <span class="num">VI</span>
+        <span class="titulo">Por qué la mayoría de los startups mueren de éxito, no de fracaso</span>
+        <span class="fecha">28 · 02 · 26</span>
+      </a>
+      <a class="ensayo surge" href="articulo.html">
+        <span class="num">V</span>
+        <span class="titulo">El mito de la productividad con IA</span>
+        <span class="fecha">15 · 02 · 26</span>
+      </a>
+      <a class="ensayo surge" href="articulo.html">
+        <span class="num">IV</span>
+        <span class="titulo">Construir en público sin perder la cabeza</span>
+        <span class="fecha">02 · 02 · 26</span>
+      </a>
+      <a class="ensayo surge" href="articulo.html">
+        <span class="num">III</span>
+        <span class="titulo">Cuando el capital de riesgo se convierte en trampa</span>
+        <span class="fecha">18 · 01 · 26</span>
+      </a>
+      <a class="ensayo surge" href="articulo.html">
+        <span class="num">II</span>
+        <span class="titulo">El precio real de las decisiones irreversibles</span>
+        <span class="fecha">05 · 01 · 26</span>
+      </a>
+      <a class="ensayo surge" href="articulo.html">
+        <span class="num">I</span>
+        <span class="titulo">Lento es suave, suave es rápido</span>
+        <span class="fecha">20 · 12 · 25</span>
+      </a>
+    </section>
+
+    <section class="suscribir">
+      <h2>Un ensayo cada tanto</h2>
+      <p>Sin prisa y sin ruido. Escribimos cuando hay algo que decir, y llega directo a tu correo.</p>
+      <form class="sub-form" action="#" onsubmit="return false;">
+        <input type="email" placeholder="tu@correo.com" aria-label="Correo electrónico" required/>
+        <button type="submit">Suscribirse</button>
+      </form>
+    </section>
+
+  </main>
+
+  <footer>
+    <span>roca<em>.ventures</em> — MMXXVI</span>
+    <span class="reloj">El agua cae · <span id="reloj">—</span></span>
+  </footer>
+
+  <div class="motivo">——ventures—roca——</div>
+
+  <script>
+    (function () {
+      var el = document.getElementById('reloj');
+      function tic() {
+        var d = new Date();
+        el.textContent = String(d.getHours()).padStart(2,'0') + ':' +
+                         String(d.getMinutes()).padStart(2,'0') + ':' +
+                         String(d.getSeconds()).padStart(2,'0');
+      }
+      tic(); setInterval(tic, 1000);
+    })();
+  </script>
+
+</body>
+</html>

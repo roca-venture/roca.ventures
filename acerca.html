@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Una carta — roca.ventures</title>
+  <meta name="description" content="Una carta sobre por qué existe roca.ventures."/>
+  <link rel="icon" type="image/png" href="apple-touch-icon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+  <div class="motivo">——roca—ventures——</div>
+
+  <nav>
+    <a href="index.html" class="logo">roca<em>.ventures</em></a>
+    <ul class="nav-links">
+      <li><a href="ensayos.html">Ensayos</a></li>
+      <li><a href="acerca.html" class="activa">Acerca</a></li>
+      <li><a href="inversiones.html">Inversiones</a></li>
+    </ul>
+  </nav>
+
+  <main class="wrap">
+    <article class="carta surge">
+      <h1>Una carta, en lugar de una página «acerca de».</h1>
+
+      <!-- ✏️ PLACEHOLDER: sustituye cada sección por tu texto real. La estructura en numerales romanos es deliberada: léela como un ensayo, no como un folleto. -->
+
+      <section>
+        <span class="romano">I.</span>
+        <p>Este sitio existe porque creemos que las mejores ideas no se gritan: se sedimentan. Capa sobre capa, ensayo sobre ensayo, hasta que un día lo que parecía arena resulta ser piedra.</p>
+        <p>[Aquí va tu historia: quién eres, de dónde vienes, por qué escribes e inviertes. Dos o tres párrafos honestos valen más que veinte de biografía.]</p>
+      </section>
+
+      <section>
+        <span class="romano">II.</span>
+        <p>[Qué crees: tu tesis sobre la tecnología, el capital y el tiempo. Una afirmación discutible y concreta vale más que diez lugares comunes. Ejemplo del tono buscado: «El capital de riesgo es un oficio de servicio, y los oficios de servicio no escalan».]</p>
+      </section>
+
+      <section>
+        <span class="romano">III.</span>
+        <p>[Qué haces en la práctica: escribes ensayos, inviertes temprano, acompañas de cerca. Sé específico y verificable. Las anécdotas concretas —incluso las poco glamurosas— construyen más credibilidad que cualquier adjetivo.]</p>
+      </section>
+
+      <section>
+        <span class="romano">IV.</span>
+        <p>[Una invitación: a quién quieres que te escriba y cómo. Deja claro qué tipo de persona encaja aquí y cuál no. Un buen filtro dicho con elegancia ahorra cien conversaciones.]</p>
+      </section>
+
+      <p class="firma">— roca.ventures</p>
+    </article>
+
+    <blockquote class="cita">
+      «La gota horada la roca, no por su fuerza, sino por su constancia.»
+      <span>A partir de Ovidio</span>
+    </blockquote>
+  </main>
+
+  <footer>
+    <span>roca<em>.ventures</em> — MMXXVI</span>
+    <span class="reloj">El agua cae · <span id="reloj">—</span></span>
+  </footer>
+
+  <div class="motivo">——ventures—roca——</div>
+
+  <script>
+    (function () {
+      var el = document.getElementById('reloj');
+      function tic() {
+        var d = new Date();
+        el.textContent = String(d.getHours()).padStart(2,'0') + ':' +
+                         String(d.getMinutes()).padStart(2,'0') + ':' +
+                         String(d.getSeconds()).padStart(2,'0');
+      }
+      tic(); setInterval(tic, 1000);
+    })();
+  </script>
+
+</body>
+</html>
