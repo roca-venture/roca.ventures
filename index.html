@@ -175,7 +175,15 @@
 
     @media (max-width: 700px) {
       .cita-panel { width: 84vw; }
-      .reloj-flotante { display: none; }
+      /* En móvil, la cápsula de lluvia baja al centro inferior */
+      .reloj-flotante {
+        top: auto;
+        bottom: calc(1.2rem + env(safe-area-inset-bottom));
+        right: 50%;
+        transform: translateX(50%);
+        white-space: nowrap;
+        font-size: 0.68rem;
+      }
       .barra { gap: 1rem; padding: 0.8rem 1.1rem; }
       .barra .logo { font-size: 1.05rem; }
     }
