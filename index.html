@@ -1,402 +1,582 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Movimiento</title>
-  <meta name="description" content="roca.ventures — La gota horada la roca, no por su fuerza, sino por su constancia."/>
-  <link rel="icon" type="image/png" href="apple-touch-icon.png">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #F1EFE7;
-      --ink: #1C1B18;
-      --stone: #6E6A60;
-      --faint: #A8A49A;
-      --line: #DDDACF;
-      --serif: 'EB Garamond', Georgia, serif;
-      --sans: 'DM Sans', -apple-system, sans-serif;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      scrollbar-width: none;       /* Firefox: sin barra de scroll */
-      -ms-overflow-style: none;
-    }
-
-    html::-webkit-scrollbar, body::-webkit-scrollbar {
-      display: none;               /* Chrome/Safari: sin barra de scroll */
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--sans);
-      font-weight: 300;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a { color: inherit; text-decoration: none; }
-    ::selection { background: var(--stone); color: var(--bg); }
-
-    /* ——— Barra píldora centrada ——— */
-    .barra {
-      position: fixed;
-      top: 1.6rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 20;
-      display: flex;
-      align-items: center;
-      gap: clamp(1.2rem, 3vw, 2.6rem);
-      padding: 1rem 1.6rem;
-      background: rgba(241, 239, 231, 0.82);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid var(--line);
-      white-space: nowrap;
-    }
-
-    .barra .logo {
-      font-family: var(--serif);
-      font-size: 1.25rem;
-      letter-spacing: 0.02em;
-      margin-right: clamp(0.6rem, 2vw, 2rem);
-    }
-
-    .barra .logo em { font-style: italic; color: var(--stone); }
-
-    .barra a.enlace {
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--stone);
-      transition: color 0.25s;
-    }
-
-    .barra a.enlace:hover { color: var(--ink); }
-
-    /* ——— Reloj esquina superior derecha ——— */
-    .reloj-flotante {
-      position: fixed;
-      top: 2.4rem;
-      right: 2rem;
-      z-index: 21;
-      font-size: 0.72rem;
-      letter-spacing: 0.03em;
-      color: var(--stone);
-      background: rgba(241, 239, 231, 0.82);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      padding: 0.5rem 0.9rem;
-      border: 1px solid var(--line);
-    }
-
-    .reloj-flotante .tenue { color: var(--faint); }
-
-    /* ——— Collage ——— */
-    #collage {
-      position: relative;
-      width: 100%;
-      padding: 16vh 0 20vh;
-    }
-
-    /* Cada vuelta es un lienzo alto; los fotogramas se colocan en
-       posiciones absolutas aleatorias dentro de él (x e y al azar) */
-    .vuelta {
-      position: relative;
-      width: 100%;
-    }
-
-    .fotograma {
-      position: absolute;
-      opacity: 0;
-      transform: translateY(34px);
-      transition: opacity 1.2s ease, transform 1.2s ease;
-    }
-
-    .fotograma.visible { opacity: 1; transform: translateY(0); }
-
-    .pastel { display: block; width: 100%; height: 100%; }
-
-    /* La posición horizontal de cada fotograma es aleatoria (se asigna por JS) */
-
-    /* ——— Cita fija al centro: los pasteles se mueven detrás ——— */
-    .cita-panel {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: min(46vw, 560px);
-      padding: clamp(4rem, 9vh, 7rem) clamp(2rem, 4vw, 4rem);
-      text-align: center;
-      background: rgba(241, 239, 231, 0.55);
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
-      z-index: 5;
-      pointer-events: none;
-    }
-
-    .cita-panel .frase {
-      font-family: var(--serif);
-      font-weight: 400;
-      font-size: 28px;          /* mismo cuerpo que la cita de referencia */
-      line-height: 1.45;
-      color: var(--ink);
-      margin: 0 auto;
-    }
-
-    @media (max-width: 700px) {
-      .cita-panel .frase { font-size: 22px; }
-    }
-
-    /* ——— Motivo de cierre de vuelta ——— */
-    .motivo-vuelta {
-      text-align: center;
-      font-family: var(--serif);
-      font-size: 0.9rem;
-      letter-spacing: 0.12em;
-      color: var(--faint);
-      padding: 16vh 0 4vh;
-      opacity: 0;
-      transition: opacity 1.2s ease;
-    }
-
-    .motivo-vuelta.visible { opacity: 1; }
-
-    @media (prefers-reduced-motion: reduce) {
-      .fotograma, .cita-panel, .motivo-vuelta { opacity: 1; transform: none; transition: none; }
-    }
-
-    @media (max-width: 700px) {
-      .cita-panel { width: 84vw; }
-      /* En móvil, la cápsula de lluvia baja al centro inferior */
-      .reloj-flotante {
-        top: auto;
-        bottom: calc(1.2rem + env(safe-area-inset-bottom));
-        right: 50%;
-        transform: translateX(50%);
-        white-space: nowrap;
-        font-size: 0.68rem;
-      }
-      .barra { gap: 1rem; padding: 0.8rem 1.1rem; }
-      .barra .logo { font-size: 1.05rem; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
 </head>
 <body>
+<x-dc>
+<helmet data-dc-atomics="">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#EFEBE1;font-family:Archivo,system-ui,sans-serif;color:#2E3440;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:#2E3440;text-decoration:none;transition:opacity .3s ease}
+  a:hover{opacity:.55}
+  @keyframes rocaDash{0%,100%{opacity:.35}50%{opacity:1}}
+  @keyframes rocaFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+  @media (max-width:1120px){#rocaRain{top:62px!important;right:50%!important;transform:translateX(50%)}}
+  @media (max-width:560px){#rocaRain{font-size:11.5px!important;max-width:min(80vw,320px)!important}}
+</style>
+<noscript><div style="position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;font-family:'Instrument Serif',serif;padding:40px;text-align:center"><p style="font-size:2rem;margin:0">Somos roca en movimiento.</p><p style="font-style:italic;color:#8D9BB5">La gota horada la roca, no por su fuerza, sino por su constancia.</p></div></noscript>
+</helmet>
+<div ref="{{ canvasRef }}" role="region" aria-label="Plano infinito de lluvia — usa las flechas para navegar" tabindex="0" style="position:fixed;inset:0;width:100%;height:100dvh;overflow:hidden;touch-action:none;overscroll-behavior:none;cursor:grab;background:#EFEBE1;outline:none;transition:filter .7s ease,transform .7s ease;will-change:filter,transform">
+  <canvas ref="{{ bgRef }}" aria-hidden="true" style="position:absolute;inset:0;display:block;width:100%;height:100%"></canvas>
+</div>
 
-  <nav class="barra">
-    <a href="/" class="logo">roca <em>ventures</em></a>
-    <a class="enlace" href="ensayos.html">Ensayos</a>
-    <a class="enlace" href="acerca.html">Acerca</a>
-    <a class="enlace" href="inversiones.html">Inversiones</a>
-  </nav>
+<div ref="{{ heroRef }}" style="position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:clamp(340px,44vw,560px);height:clamp(190px,25vw,290px);z-index:20;pointer-events:none;background:rgba(248,246,240,.40);backdrop-filter:blur(4px) saturate(1.02);-webkit-backdrop-filter:blur(4px) saturate(1.02);-webkit-mask-image:radial-gradient(125% 130% at 50% 50%, #000 42%, rgba(0,0,0,0) 80%);mask-image:radial-gradient(125% 130% at 50% 50%, #000 42%, rgba(0,0,0,0) 80%);transition:opacity .6s ease,filter .6s ease">
+  <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-style:italic;font-size:clamp(1.8rem,4vw,3rem);line-height:1.1;letter-spacing:.005em;color:#2E3440;text-align:center;text-wrap:balance">"Somos roca<br>en movimiento."</h1>
+</div>
 
-  <div class="reloj-flotante" id="lluvia"><span class="tenue">Buscando lluvia</span> <span id="reloj">—</span></div>
-
-  <div class="cita-panel">
-    <p class="frase">"Somos roca<br>en movimiento."</p>
+<header style="position:fixed;top:clamp(16px,3vw,26px);left:0;right:0;display:flex;justify-content:center;align-items:flex-start;padding:0 clamp(16px,3vw,32px);z-index:40;pointer-events:none">
+  <div style="pointer-events:auto;display:flex;align-items:center;gap:clamp(14px,2vw,24px);padding:13px clamp(16px,2vw,24px);background:rgba(252,250,246,.82);border:1px solid rgba(46,52,64,.13);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)">
+    <a href="index.html" style="font-family:'Instrument Serif',serif;font-size:19px;letter-spacing:.01em;color:#2E3440">roca&nbsp;<span style="font-style:italic;color:#8D9BB5">ventures</span></a>
+    <span aria-hidden="true" style="width:1px;height:20px;background:rgba(46,52,64,.15)"></span>
+    <nav aria-label="Principal" style="display:flex;gap:clamp(14px,1.8vw,24px);font:500 11px/1 Archivo,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#5b6470">
+      <a href="ensayos.html" data-panel="ensayos">Ensayos</a>
+      <a href="acerca.html" data-panel="acerca">Acerca</a>
+      <a href="inversiones.html" data-panel="inversiones">Inversiones</a>
+    </nav>
   </div>
+  <div ref="{{ rainRef }}" id="rocaRain" aria-live="polite" style="pointer-events: auto; position: absolute; top: 4px; padding: 13px 18px; background: rgba(252,250,246,.82); border: 1px solid rgba(46,52,64,.13); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); font: 400 12.5px/1.25 Archivo,sans-serif; color: #8a8272; max-width: min(46vw,330px); left: 1175px">Buscando lluvia&nbsp;<span style="display:inline-block;animation:rocaDash 1.8s ease-in-out infinite">—</span></div>
+</header>
 
-  <main id="collage" aria-label="Collage">
-    <!-- Fotogramas generados por JS; el ciclo de 32 se repite al infinito -->
-  </main>
+<div ref="{{ overlayRef }}" style="position:fixed;inset:0;z-index:30;display:none;opacity:0;transition:opacity .55s ease;background:rgba(240,236,226,.5);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)">
+  <div ref="{{ scrollRef }}" onClick="{{ onScrollClick }}" style="position:absolute;inset:0;overflow-y:auto;overflow-x:hidden">
+    <div ref="{{ panelRef }}" style="background:#FCFBF7;width:min(760px,calc(100% - 40px));margin:clamp(96px,13vh,150px) auto 90px;box-sizing:border-box;padding:clamp(40px,6vw,76px) clamp(26px,6vw,80px) clamp(56px,8vw,92px);box-shadow:0 30px 90px -34px rgba(46,52,64,.32);border:1px solid rgba(46,52,64,.06)"></div>
+  </div>
+  <button ref="{{ closeRef }}" onClick="{{ onClose }}" aria-label="Cerrar" style="position:fixed;left:50%;bottom:clamp(20px,4vh,36px);transform:translateX(-50%);opacity:0;transition:opacity .5s ease .1s;display:flex;align-items:center;padding:11px 20px;background:rgba(252,250,246,.92);border:1px solid rgba(46,52,64,.14);font:500 10.5px/1 Archivo,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#5b6470;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)">Cerrar&nbsp;·&nbsp;Esc</button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;fondo&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Niebla&quot;,&quot;options&quot;:[&quot;Lluvia&quot;,&quot;Ondas&quot;,&quot;Niebla&quot;,&quot;Estratos&quot;,&quot;Planos de color&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Fondo&quot;},&quot;autoDrift&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Movimiento&quot;},&quot;driftSpeed&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:3,&quot;min&quot;:0,&quot;max&quot;:3,&quot;step&quot;:0.25,&quot;unit&quot;:&quot;×&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Movimiento&quot;}}">
+class Component extends DCLogic {
+  canvasRef = React.createRef();
+  bgRef = React.createRef();
+  heroRef = React.createRef();
+  rainRef = React.createRef();
+  overlayRef = React.createRef();
+  panelRef = React.createRef();
+  scrollRef = React.createRef();
+  closeRef = React.createRef();
 
-  <script>
-    (function () {
-      /* ——— 32 pasteles ———
-         Para sustituir uno por fotografía: cambia el color por
-         { img: 'images/tu-foto.avif' } y el bloque usará <img>. */
-      var PASTELES = [
-        '#E7D3CB', '#CFDCD2', '#DED4E6', '#EBDCC0', '#C9D8E5', '#E5CFDA',
-        '#D3DEC4', '#E8D2BC', '#C7D4E0', '#E3D8C6', '#D2E0DC', '#EAD0CE',
-        '#D8D3E4', '#E0DEC4', '#CCD8CC', '#EBD6CF', '#CADCE0', '#E6D5BE',
-        '#DACDDE', '#D3E0CE', '#E9D2C3', '#CDD8E4', '#E1D5D2', '#D6DEC8',
-        '#E7CED6', '#CBDAD5', '#E4D9BE', '#D1D3E2', '#ECD6C8', '#CEDDD1',
-        '#DFD0E1', '#DDD9C2'
-      ];
+  renderVals() {
+    return {
+      canvasRef: this.canvasRef,
+      bgRef: this.bgRef,
+      heroRef: this.heroRef,
+      rainRef: this.rainRef,
+      overlayRef: this.overlayRef,
+      panelRef: this.panelRef,
+      scrollRef: this.scrollRef,
+      closeRef: this.closeRef,
+      onNav: this.onNav,
+      onClose: this.close,
+      onScrollClick: this.onScrollClick,
+    };
+  }
 
-      var collage = document.getElementById('collage');
+  // ---- Daybreak-style in-place panels ----
+  onNav = (e) => {
+    e.preventDefault();
+    const a = e.currentTarget;
+    const key = (a.dataset.panel) || (a.getAttribute('href') || '').replace(/\.(?:dc\.)?html$/, '');
+    if (!this.PANELS[key]) return;
+    if (this._panelOpen && this._curKey === key) { this.close(); return; }
+    this.openPanel(key);
+  };
+  bindNav() {
+    const nav = document.querySelector('nav[aria-label="Principal"]');
+    if (!nav) return;
+    nav.querySelectorAll('a[data-panel]').forEach(a => a.addEventListener('click', this.onNav));
+  }
+  onScrollClick = (e) => { if (e.target === this.scrollRef.current) this.close(); };
+  onKey = (e) => { if (e.key === 'Escape') this.close(); };
 
-      var observador = new IntersectionObserver(function (entradas) {
-        entradas.forEach(function (e) {
-          if (e.isIntersecting) { e.target.classList.add('visible'); observador.unobserve(e.target); }
-        });
-      }, { threshold: 0.12 });
+  openPanel(key) {
+    const p = this.panelRef.current, ov = this.overlayRef.current;
+    if (!p || !ov) return;
+    this._curKey = key;
+    p.innerHTML = this.PANELS[key] || '';
+    if (this.scrollRef.current) this.scrollRef.current.scrollTop = 0;
+    ov.style.display = 'block';
+    void ov.offsetWidth;
+    ov.style.opacity = '1';
+    const cv = this.canvasRef.current; cv.style.filter = 'blur(16px)'; cv.style.transform = 'scale(1.06)';
+    const h = this.heroRef.current; h.style.opacity = '0'; h.style.filter = 'blur(8px)';
+    p.style.opacity = '0'; p.style.transform = 'translateY(16px) scale(.99)'; p.style.filter = 'blur(7px)';
+    void p.offsetWidth;
+    p.style.transition = 'opacity .6s ease, transform .65s cubic-bezier(.2,.7,.2,1), filter .6s ease';
+    p.style.opacity = '1'; p.style.transform = 'none'; p.style.filter = 'blur(0)';
+    if (this.closeRef.current) this.closeRef.current.style.opacity = '1';
+    this._panelOpen = true;
+    document.addEventListener('keydown', this.onKey);
+  }
 
-      /* Tamaños posibles (ancho en vw, proporción) — se combinan al azar */
-      var TAMANOS = [
-        { w: 34, ar: '4/5' },  { w: 26, ar: '3/4' },  { w: 15, ar: '4/3' },
-        { w: 30, ar: '4/3' },  { w: 20, ar: '3/4' },  { w: 24, ar: '4/5' },
-        { w: 30, ar: '5/4' },  { w: 16, ar: '4/3' }
-      ];
+  close = () => {
+    if (!this._panelOpen) return;
+    const ov = this.overlayRef.current;
+    ov.style.opacity = '0';
+    const cv = this.canvasRef.current; cv.style.filter = ''; cv.style.transform = '';
+    const h = this.heroRef.current; h.style.opacity = ''; h.style.filter = '';
+    if (this.closeRef.current) this.closeRef.current.style.opacity = '0';
+    this._panelOpen = false; this._curKey = null;
+    clearTimeout(this._closeT);
+    this._closeT = setTimeout(() => { if (!this._panelOpen) ov.style.display = 'none'; }, 560);
+    document.removeEventListener('keydown', this.onKey);
+  };
 
-      function alAzar(min, max) { return min + Math.random() * (max - min); }
+  EMBLEM = '<div style="width:60px;height:60px;border-radius:50%;margin:0 auto 26px;background:radial-gradient(circle at 34% 30%,#c4b78d,#877a52);display:flex;align-items:center;justify-content:center;font-family:\'Instrument Serif\',serif;font-style:italic;font-size:24px;color:#f4efe1;box-shadow:inset 0 2px 6px rgba(255,255,255,.4),0 6px 16px rgba(0,0,0,.14)">r</div>';
+  DOTTED = '<div style="border-top:1.5px dotted rgba(46,52,64,.32);margin:38px 0 34px"></div>';
 
-      /* Altura media (en vh) que ocupa cada fotograma dentro del lienzo */
-      var PASO = 42;
+  PANELS = {
+    acerca:
+      '<div style="display:flex;justify-content:space-between;font:500 10.5px/1.6 Archivo,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#a9a08c;margin-bottom:44px"><span>2026</span><span style="text-align:right">Iberoam&eacute;rica</span></div>' +
+      this.EMBLEM +
+      '<h1 style="margin:0;text-align:center;font-family:\'Instrument Serif\',serif;font-weight:400;font-size:clamp(2rem,5.4vw,3.3rem);line-height:1.03;color:#2E3440;text-wrap:balance">Somos roca<br>en movimiento.</h1>' +
+      this.DOTTED +
+      '<div style="max-width:60ch;margin:0 auto">' +
+      '<p style="margin:0 0 20px;font-size:clamp(16px,1.4vw,18px);line-height:1.7;color:#4f4838">roca ventures acompa&ntilde;a a fundadores que entienden el tiempo como aliado. Invertimos temprano y nos quedamos: no buscamos el golpe de fuerza, sino la constancia que, gota a gota, termina por dar forma a la piedra.</p>' +
+      '<p style="margin:0 0 40px;font-size:clamp(16px,1.4vw,18px);line-height:1.7;color:#4f4838">Trabajamos con compa&ntilde;&iacute;as en sus primeros a&ntilde;os, en tecnolog&iacute;a, clima e infraestructura de Iberoam&eacute;rica. Pocas apuestas, mucha paciencia.</p>' +
+      '<blockquote style="margin:0 0 40px;padding-left:22px;border-left:2px solid rgba(46,52,64,.18)"><p style="margin:0 0 8px;font-family:\'Instrument Serif\',serif;font-style:italic;font-size:clamp(1.2rem,2.4vw,1.6rem);line-height:1.35;color:#2E3440">&laquo;La gota horada la roca, no por su fuerza, sino por su constancia.&raquo;</p><cite style="font:500 11px/1 Archivo,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#a29a88;font-style:normal">Ovidio &middot; Epistulae ex Ponto</cite></blockquote>' +
+      '<p style="margin:0;font-size:15px;line-height:1.6;color:#6b6455">Escr&iacute;benos a <a href="mailto:hola@roca.ventures" style="border-bottom:1px solid rgba(46,52,64,.3);padding-bottom:1px">hola@roca.ventures</a></p>' +
+      '</div>',
+    ensayos:
+      '<div style="display:flex;justify-content:space-between;font:500 10.5px/1.6 Archivo,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#a9a08c;margin-bottom:44px"><span>2026</span><span style="text-align:right">Ensayos</span></div>' +
+      this.EMBLEM +
+      '<h1 style="margin:0 0 8px;text-align:center;font-family:\'Instrument Serif\',serif;font-weight:400;font-size:clamp(2rem,5vw,3.1rem);line-height:1.04;color:#2E3440;text-wrap:balance">Escrito lentamente,<br>como cae la lluvia.</h1>' +
+      '<p style="margin:0 auto;max-width:36ch;text-align:center;font-family:\'Instrument Serif\',serif;font-style:italic;font-size:clamp(1.05rem,2vw,1.3rem);line-height:1.4;color:#8a7f68">Notas sobre la constancia, el tiempo y lo que se construye gota a gota.</p>' +
+      this.DOTTED +
+      this.essayRow('La paciencia como estrategia', '2026', 'Por qu&eacute; las mejores compa&ntilde;&iacute;as se parecen m&aacute;s a la erosi&oacute;n que a la explosi&oacute;n.') +
+      this.essayRow('Gutta cavat lapidem', '2026', 'Una nota sobre Ovidio, la constancia y el origen de nuestro lema.') +
+      this.essayRow('Invertir en la erosi&oacute;n', '2025', 'C&oacute;mo pensamos el tiempo como el principal activo de un fundador.'),
+    inversiones:
+      '<div style="display:flex;justify-content:space-between;font:500 10.5px/1.6 Archivo,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#a9a08c;margin-bottom:44px"><span>2026</span><span style="text-align:right">Portafolio</span></div>' +
+      this.EMBLEM +
+      '<h1 style="margin:0;text-align:center;font-family:\'Instrument Serif\',serif;font-weight:400;font-size:clamp(2rem,5.4vw,3.3rem);line-height:1.03;color:#2E3440;text-wrap:balance">Pocas apuestas.<br>Mucha paciencia.</h1>' +
+      this.DOTTED +
+      '<div style="max-width:60ch;margin:0 auto"><p style="margin:0 0 44px;font-size:clamp(16px,1.4vw,18px);line-height:1.7;color:#4f4838">Invertimos entre 250k y 2M en las primeras rondas de compa&ntilde;&iacute;as de Iberoam&eacute;rica, y acompa&ntilde;amos durante toda la traves&iacute;a. Preferimos la constancia a la fuerza.</p>' +
+      '<p style="margin:0 0 18px;font:500 11px/1 Archivo,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#9a9280">Portafolio</p>' +
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px">' +
+      '<div style="aspect-ratio:16/10;background:repeating-linear-gradient(45deg,#e3ddcd 0 10px,#ded7c4 10px 20px);display:flex;align-items:center;justify-content:center;font:500 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.1em;color:#8a8272">logo &middot; compa&ntilde;&iacute;a</div>' +
+      '<div style="aspect-ratio:16/10;background:repeating-linear-gradient(45deg,#d6dfd2 0 10px,#cfd9ca 10px 20px);display:flex;align-items:center;justify-content:center;font:500 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.1em;color:#7f8a78">logo &middot; compa&ntilde;&iacute;a</div>' +
+      '<div style="aspect-ratio:16/10;background:repeating-linear-gradient(45deg,#cfdae2 0 10px,#c7d3dd 10px 20px);display:flex;align-items:center;justify-content:center;font:500 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.1em;color:#7a8794">logo &middot; compa&ntilde;&iacute;a</div>' +
+      '</div><p style="margin:26px 0 0;font-size:14px;line-height:1.6;color:#8a8272">Portafolio en construcci&oacute;n &mdash; <a href="mailto:hola@roca.ventures" style="border-bottom:1px solid rgba(46,52,64,.3);padding-bottom:1px">pres&eacute;ntanos tu compa&ntilde;&iacute;a</a>.</p></div>',
+  };
 
-      function fotograma(i, slot) {
-        var d = document.createElement('div');
-        d.className = 'fotograma';
-        var t = TAMANOS[Math.floor(Math.random() * TAMANOS.length)];
-        /* En pantallas angostas los bloques se agrandan para seguir leyéndose */
-        var ancho = window.innerWidth < 700 ? Math.min(t.w * 2.2, 86) : t.w;
-        /* Horizontal: totalmente al azar, de borde a borde */
-        var izq = alAzar(-3, 100 - ancho + 3);
-        /* Vertical: franja del slot + desvío aleatorio, para que varios
-           bloques convivan a la misma altura sin huecos enormes ni zigzag */
-        var arriba = slot * PASO + alAzar(-14, 14);
-        d.style.width = ancho + 'vw';
-        d.style.aspectRatio = t.ar;
-        d.style.left = izq + 'vw';
-        d.style.top = arriba + 'vh';
-        var item = PASTELES[i];
-        if (typeof item === 'object' && item.img) {
-          d.innerHTML = '<img class="pastel" src="' + item.img + '" alt="" style="object-fit:cover;"/>';
-        } else {
-          d.innerHTML = '<div class="pastel" style="background:' + item + ';"></div>';
+  essayRow(title, year, desc) {
+    return '<a href="#" onclick="return false" style="display:block;padding:26px 0;border-bottom:1px solid rgba(46,52,64,.14);text-decoration:none">' +
+      '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap"><h2 style="margin:0;font-family:\'Instrument Serif\',serif;font-weight:400;font-size:clamp(1.35rem,2.6vw,1.85rem);line-height:1.15;color:#2E3440">' + title + '</h2><span style="font:500 12px/1 Archivo,sans-serif;letter-spacing:.06em;color:#a29a88;white-space:nowrap">' + year + '</span></div>' +
+      '<p style="margin:10px 0 0;font-size:15px;line-height:1.55;color:#6b6455;max-width:56ch">' + desc + '</p></a>';
+  }
+
+  // ---- palette ----
+  PAL = {
+    despeje:  ['#D9CEA8', '#D1C59C', '#DFD7BF', '#E3DBC7', '#CFC59E'],
+    llovizna: ['#C4D2BE', '#CBD6C6', '#D3DDD0', '#BFCFB9', '#C9D4C4'],
+    tormenta: ['#B7CBD6', '#AEC4D2', '#C3D2DB', '#AABFCE', '#B9CCD8'],
+  };
+  BG = { despeje: [239,235,225], llovizna: [236,235,228], tormenta: [232,234,231] };
+
+  mulberry32(a) {
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  mod(n, m) { return ((n % m) + m) % m; }
+  hexA(hex, a) {
+    const n = parseInt(hex.slice(1), 16);
+    return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+  }
+
+  regionValue(cf, rf) {
+    return Math.sin((cf / this.cols) * Math.PI * 2) + Math.sin((rf / this.rows) * Math.PI * 2 + 1.7);
+  }
+  regionName(cf, rf) {
+    const t = (this.regionValue(cf, rf) + 2) / 4;
+    if (t < 0.40) return 'despeje';
+    if (t < 0.74) return 'llovizna';
+    return 'tormenta';
+  }
+
+  componentDidMount() {
+    this.reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.offsetX = 0; this.offsetY = 0;
+    this.targetX = 0; this.targetY = 0;
+    this.velX = 0; this.velY = 0;
+    this.dragging = false;
+    this.lastInput = performance.now();
+    this.bg = [239, 235, 225];
+    this.rainFound = false;
+    this._mode = this.props.fondo || 'Lluvia';
+    this.build();
+    this.bindInput();
+    this.bindNav();
+    this.fetchRain();
+    this.raf = requestAnimationFrame(this.tick);
+    document.addEventListener('visibilitychange', this.onVis);
+    window.addEventListener('resize', this.onResize);
+  }
+  componentWillUnmount() {
+    cancelAnimationFrame(this.raf);
+    clearInterval(this.clock);
+    document.removeEventListener('visibilitychange', this.onVis);
+    window.removeEventListener('resize', this.onResize);
+  }
+
+  onVis = () => {
+    if (document.hidden) cancelAnimationFrame(this.raf);
+    else { this.last = performance.now(); this.raf = requestAnimationFrame(this.tick); }
+  };
+  onResize = () => {
+    clearTimeout(this._rz);
+    this._rz = setTimeout(() => { this.build(); }, 200);
+  };
+
+  build() {
+    const vw = window.innerWidth, vh = window.innerHeight;
+    this.vw = vw; this.vh = vh;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const cv = this.bgRef.current;
+    if (!cv) return;
+    cv.width = Math.round(vw * dpr);
+    cv.height = Math.round(vh * dpr);
+    this.ctx = cv.getContext('2d');
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.seedWorld();
+  }
+
+  seedWorld() {
+    const rng = this.mulberry32(20260711);
+    const vw = this.vw, vh = this.vh;
+
+    // planos de color
+    this.cell = Math.max(180, Math.min(320, Math.round(vw * 0.18)));
+    this.cols = Math.ceil((vw + this.cell * 4) / this.cell);
+    this.rows = Math.ceil((vh + this.cell * 4) / this.cell);
+    this.worldW = this.cols * this.cell;
+    this.worldH = this.rows * this.cell;
+    this.planes = [];
+    for (let r = 0; r < this.rows; r++) for (let c = 0; c < this.cols; c++) {
+      if (rng() > 0.17) continue;
+      const wc = 2 + Math.floor(rng() * 3), hc = 2 + Math.floor(rng() * 3);
+      const pal = this.PAL[this.regionName(c + wc / 2, r + hc / 2)];
+      this.planes.push({ x: c * this.cell, y: r * this.cell, w: wc * this.cell, h: hc * this.cell, col: pal[Math.floor(rng() * pal.length)], op: 0.55 + rng() * 0.3 });
+    }
+    this.veils = [];
+    const nv = 4 + Math.floor(rng() * 3);
+    for (let i = 0; i < nv; i++) this.veils.push({ x: Math.floor(rng() * this.cols) * this.cell, y: Math.floor(rng() * this.rows) * this.cell, w: (2 + Math.floor(rng() * 2)) * this.cell, h: (1 + Math.floor(rng() * 2)) * this.cell });
+
+    // lluvia
+    this.dropsW = Math.max(vw * 1.4, 900); this.dropsH = Math.max(vh * 1.4, 900);
+    this.drops = [];
+    const nd = Math.round((vw * vh) / 8500);
+    for (let i = 0; i < nd; i++) this.drops.push({ x: rng() * this.dropsW, y: rng() * this.dropsH, len: 9 + rng() * 22, layer: rng() < 0.5 ? 0.55 : 1, a: 0.06 + rng() * 0.13 });
+
+    // ondas
+    this.ringsW = Math.max(vw * 1.5, 1000); this.ringsH = Math.max(vh * 1.5, 1000);
+    this.rings = [];
+    const nr = Math.round((vw * vh) / 55000) + 6;
+    for (let i = 0; i < nr; i++) this.rings.push({ x: rng() * this.ringsW, y: rng() * this.ringsH, phase: rng(), max: 60 + rng() * 130, sp: 0.12 + rng() * 0.14 });
+
+    // niebla
+    this.blobsW = Math.max(vw * 1.6, 1100); this.blobsH = Math.max(vh * 1.6, 1100);
+    this.blobs = [];
+    const regs = ['despeje', 'llovizna', 'tormenta'];
+    const nb = Math.round((vw * vh) / 68000) + 5;
+    for (let i = 0; i < nb; i++) { const pal = this.PAL[regs[Math.floor(rng() * 3)]]; this.blobs.push({ x: rng() * this.blobsW, y: rng() * this.blobsH, r: 190 + rng() * 260, col: pal[Math.floor(rng() * pal.length)], a: 0.22 + rng() * 0.18 }); }
+  }
+
+  // ---- input ----
+  bindInput() {
+    const root = this.canvasRef.current;
+    root.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      this.targetX += e.deltaX; this.targetY += e.deltaY;
+      this.velX = e.deltaX * 0.3; this.velY = e.deltaY * 0.3;
+      this.lastInput = performance.now();
+    }, { passive: false });
+    root.addEventListener('pointerdown', (e) => {
+      this.dragging = true;
+      root.setPointerCapture(e.pointerId);
+      root.style.cursor = 'grabbing';
+      this.lastX = e.clientX; this.lastY = e.clientY;
+      this.velX = 0; this.velY = 0;
+      this.lastInput = performance.now();
+    });
+    root.addEventListener('pointermove', (e) => {
+      if (!this.dragging) return;
+      const dx = e.clientX - this.lastX, dy = e.clientY - this.lastY;
+      this.targetX -= dx; this.targetY -= dy;
+      this.velX = -dx; this.velY = -dy;
+      this.lastX = e.clientX; this.lastY = e.clientY;
+      this.lastInput = performance.now();
+    });
+    const up = () => {
+      if (!this.dragging) return;
+      this.dragging = false;
+      root.style.cursor = 'grab';
+      if (this.reduced) { this.velX = 0; this.velY = 0; }
+      this.lastInput = performance.now();
+    };
+    root.addEventListener('pointerup', up);
+    root.addEventListener('pointercancel', up);
+    root.addEventListener('keydown', (e) => {
+      const step = this.cell * 0.6;
+      if (e.key === 'ArrowRight') this.targetX += step;
+      else if (e.key === 'ArrowLeft') this.targetX -= step;
+      else if (e.key === 'ArrowDown') this.targetY += step;
+      else if (e.key === 'ArrowUp') this.targetY -= step;
+      else return;
+      e.preventDefault();
+      this.lastInput = performance.now();
+    });
+  }
+
+  // ---- loop ----
+  tick = (now) => {
+    const dt = this.last ? Math.min((now - this.last) / 16.67, 3) : 1;
+    this.last = now;
+    this._mode = this.props.fondo || 'Lluvia';
+
+    const drift = (this.props.autoDrift ?? true) && !this.reduced;
+    const speed = this.props.driftSpeed ?? 1;
+    if (drift && !this.dragging && (now - this.lastInput) > 6000) {
+      this.targetX += 0.18 * speed * dt;
+      this.targetY += 0.12 * speed * dt;
+    }
+    if (!this.dragging) {
+      this.targetX += this.velX; this.targetY += this.velY;
+      this.velX *= 0.90; this.velY *= 0.90;
+      if (Math.abs(this.velX) < 0.02) this.velX = 0;
+      if (Math.abs(this.velY) < 0.02) this.velY = 0;
+    }
+    if (this.reduced) { this.offsetX = this.targetX; this.offsetY = this.targetY; }
+    else {
+      this.offsetX += (this.targetX - this.offsetX) * 0.12 * dt;
+      this.offsetY += (this.targetY - this.offsetY) * 0.12 * dt;
+    }
+
+    this.updateAmbient();
+    this.drawFrame(now);
+    this.raf = requestAnimationFrame(this.tick);
+  };
+
+  place(wx, wy, W, H) {
+    const sx = this.mod(wx - this.offsetX, W), sy = this.mod(wy - this.offsetY, H);
+    return [[sx, sy], [sx - W, sy], [sx, sy - H], [sx - W, sy - H]];
+  }
+
+  drawFrame(now) {
+    const ctx = this.ctx, vw = this.vw, vh = this.vh;
+    if (!ctx) return;
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = `rgb(${this.bg.map(Math.round).join(',')})`;
+    ctx.fillRect(0, 0, vw, vh);
+    switch (this._mode) {
+      case 'Lluvia': this.drawLluvia(now); break;
+      case 'Ondas': this.drawOndas(now); break;
+      case 'Niebla': this.drawNiebla(); break;
+      case 'Estratos': this.drawEstratos(); break;
+      default: this.drawPlanos();
+    }
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  drawPlanos() {
+    const ctx = this.ctx;
+    ctx.globalCompositeOperation = 'multiply';
+    for (const p of this.planes) for (const [x, y] of this.place(p.x, p.y, this.worldW, this.worldH)) {
+      if (x > this.vw || y > this.vh || x + p.w < 0 || y + p.h < 0) continue;
+      ctx.globalAlpha = p.op; ctx.fillStyle = p.col; ctx.fillRect(x, y, p.w, p.h);
+    }
+    ctx.globalCompositeOperation = 'source-over';
+    for (const v of this.veils) for (const [x, y] of this.place(v.x, v.y, this.worldW, this.worldH)) {
+      if (x > this.vw || y > this.vh || x + v.w < 0 || y + v.h < 0) continue;
+      ctx.globalAlpha = 0.5; ctx.fillStyle = '#F9F7F2'; ctx.fillRect(x, y, v.w, v.h);
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  drawLluvia(now) {
+    const ctx = this.ctx, t = (this.reduced ? 0 : now / 1000);
+    ctx.lineCap = 'round';
+    for (const d of this.drops) {
+      const fall = (t * (150 * d.layer)) % this.dropsH;
+      const oxp = this.offsetX * d.layer, oyp = this.offsetY * d.layer;
+      const sx = this.mod(d.x - oxp, this.dropsW), sy = this.mod(d.y + fall - oyp, this.dropsH);
+      ctx.strokeStyle = `rgba(120,150,170,${d.a})`;
+      ctx.lineWidth = d.layer;
+      for (const [x, y] of [[sx, sy], [sx - this.dropsW, sy], [sx, sy - this.dropsH], [sx - this.dropsW, sy - this.dropsH]]) {
+        if (x > this.vw || y > this.vh || x < -4 || y + d.len < 0) continue;
+        ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 2, y + d.len); ctx.stroke();
+      }
+    }
+  }
+
+  drawOndas(now) {
+    const ctx = this.ctx, t = (this.reduced ? 0.3 : now / 1000);
+    ctx.lineWidth = 1;
+    for (const r of this.rings) {
+      for (const [x, y] of this.place(r.x, r.y, this.ringsW, this.ringsH)) {
+        if (x > this.vw + r.max || y > this.vh + r.max || x + r.max < 0 || y + r.max < 0) continue;
+        for (let k = 0; k < 2; k++) {
+          const cyc = ((t * r.sp) + r.phase + k * 0.5) % 1;
+          ctx.strokeStyle = `rgba(120,150,170,${(1 - cyc) * 0.26})`;
+          ctx.beginPath(); ctx.arc(x, y, cyc * r.max + 1, 0, Math.PI * 2); ctx.stroke();
         }
-        return d;
       }
+    }
+  }
 
-      function motivoVuelta() {
-        var d = document.createElement('div');
-        d.className = 'motivo-vuelta';
-        d.textContent = '——roca—ventures——';
-        return d;
+  drawNiebla() {
+    const ctx = this.ctx;
+    ctx.globalCompositeOperation = 'multiply';
+    for (const b of this.blobs) for (const [x, y] of this.place(b.x, b.y, this.blobsW, this.blobsH)) {
+      if (x - b.r > this.vw || y - b.r > this.vh || x + b.r < 0 || y + b.r < 0) continue;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, b.r);
+      g.addColorStop(0, this.hexA(b.col, b.a));
+      g.addColorStop(1, this.hexA(b.col, 0));
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, b.r, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalCompositeOperation = 'source-over';
+  }
+
+  drawEstratos() {
+    const ctx = this.ctx, ox = this.offsetX, oy = this.offsetY;
+    const spacing = 44;
+    ctx.lineWidth = 1.2;
+    const startY = -this.mod(oy, spacing) - spacing;
+    for (let yy = startY; yy < this.vh + spacing; yy += spacing) {
+      const worldY = yy + oy;
+      ctx.beginPath();
+      for (let xx = -6; xx <= this.vw + 6; xx += 8) {
+        const worldX = xx + ox;
+        const wob = Math.sin(worldX * 0.004 + worldY * 0.010) * 14 + Math.sin(worldX * 0.012 + worldY * 0.004) * 6;
+        const y = yy + wob;
+        if (xx <= -6) ctx.moveTo(xx, y); else ctx.lineTo(xx, y);
       }
+      ctx.strokeStyle = `rgba(92,110,120,${0.10 + 0.05 * Math.sin(worldY * 0.02)})`;
+      ctx.stroke();
+    }
+  }
 
-      /* Baraja los índices para que el orden de los colores también varíe */
-      function barajar(n) {
-        var a = [];
-        for (var i = 0; i < n; i++) a.push(i);
-        for (var j = a.length - 1; j > 0; j--) {
-          var k = Math.floor(Math.random() * (j + 1));
-          var tmp = a[j]; a[j] = a[k]; a[k] = tmp;
+  updateAmbient() {
+    if (this._af && performance.now() - this._af < 90) return;
+    this._af = performance.now();
+    const cf = this.offsetX / this.cell + this.cols / 2;
+    const rf = this.offsetY / this.cell + this.rows / 2;
+    const t = (this.regionValue(cf, rf) + 2) / 4;
+    let target;
+    if (t < 0.40) target = this.BG.despeje;
+    else if (t < 0.74) { const k = (t - 0.40) / 0.34; target = this.BG.despeje.map((v, i) => v + (this.BG.llovizna[i] - v) * k); }
+    else { const k = (t - 0.74) / 0.26; target = this.BG.llovizna.map((v, i) => v + (this.BG.tormenta[i] - v) * k); }
+    if (this.rainFound) target = target.map((v, i) => v + (this.BG.llovizna[i] - v) * 0.25);
+    this.bg = this.bg.map((v, i) => v + (target[i] - v) * 0.05);
+  }
+
+  // ---- rain locator ----
+  CITIES = [
+    ['Bergen',60.39,5.32],['Cardiff',51.48,-3.18],['Glasgow',55.86,-4.25],['Reikiavik',64.15,-21.94],
+    ['Tórshavn',62.01,-6.77],['Ámsterdam',52.37,4.90],['Múnich',48.14,11.58],['Milán',45.46,9.19],
+    ['Oporto',41.15,-8.61],['Santiago de Compostela',42.88,-8.54],['Bilbao',43.26,-2.93],['Génova',44.41,8.93],
+    ['Liubliana',46.05,14.51],['Zúrich',47.37,8.54],['Bruselas',50.85,4.35],['Estocolmo',59.33,18.06],
+    ['Oslo',59.91,10.75],['Trondheim',63.43,10.39],['Madrid',40.42,-3.70],
+    ['Valdivia',-39.81,-73.24],['Puerto Montt',-41.47,-72.94],['Buenaventura',3.88,-77.03],['Quibdó',5.69,-76.66],
+    ['Bogotá',4.71,-74.07],['San José',9.93,-84.08],['Panamá',8.98,-79.52],['Manaos',-3.10,-60.02],
+    ['Belém',-1.46,-48.50],['Ushuaia',-54.80,-68.30],['Lima',-12.05,-77.04],['Ciudad de México',19.43,-99.13],
+    ['Nueva York',40.71,-74.01],['Seattle',47.61,-122.33],['Vancouver',49.28,-123.12],['Hilo',19.73,-155.09],
+    ['Nueva Orleans',29.95,-90.07],['Miami',25.76,-80.19],
+    ['Tokio',35.68,139.65],['Osaka',34.69,135.50],['Taipéi',25.03,121.57],['Hong Kong',22.32,114.17],
+    ['Kuching',1.55,110.33],['Yakarta',-6.21,106.85],['Singapur',1.35,103.82],['Kuala Lumpur',3.14,101.69],
+    ['Manila',14.60,120.98],['Bombay',19.08,72.88],['Cherrapunji',25.30,91.58],['Colombo',6.93,79.86],
+    ['Bangkok',13.76,100.50],['Cantón',23.13,113.26],['Chittagong',22.36,91.78],
+    ['Auckland',-36.85,174.76],['Wellington',-41.29,174.78],['Hobart',-42.88,147.33],['Cairns',-16.92,145.77],
+    ['Suva',-18.12,178.44],['Lagos',6.52,3.38],['Duala',4.05,9.70],['Libreville',0.42,9.47],
+    ['Kampala',0.35,32.58],['Antananarivo',-18.88,47.51],['Ciudad del Cabo',-33.93,18.42],['Durban',-29.86,31.02],
+  ];
+  WET = new Set([51,53,55,56,57,61,63,65,66,67,80,81,82,95,96,99]);
+
+  dayHourSeed() {
+    const d = new Date();
+    const start = Date.UTC(d.getUTCFullYear(), 0, 0);
+    const day = Math.floor((Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) - start) / 864e5);
+    return (d.getUTCFullYear() * 1000 + day) * 24 + d.getUTCHours();
+  }
+  horaLocal(tz) {
+    try {
+      const p = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: tz }).formatToParts(new Date());
+      const g = t => { const x = p.find(o => o.type === t); return x ? x.value : ''; };
+      return `${g('hour')}:${g('minute')}${g('dayPeriod').toLowerCase().replace(/[^a-z]/g, '')}`;
+    } catch (e) { return ''; }
+  }
+  showRain(prefix, city, tz) {
+    this.rainCity = city; this.rainTz = tz;
+    const render = () => {
+      if (!this.rainRef.current) return;
+      this.rainRef.current.style.animation = 'rocaFade .8s ease both';
+      this.rainRef.current.innerHTML =
+        `${prefix} <span style="color:#4f4838">${city}</span>` +
+        (tz ? ` a las <span style="color:#4f4838;font-weight:600">${this.horaLocal(tz)}</span>` : '');
+    };
+    render();
+    clearInterval(this.clock);
+    if (tz) this.clock = setInterval(render, 60000);
+  }
+  showSilence() {
+    if (!this.rainRef.current) return;
+    this.rainRef.current.style.animation = 'rocaFade .8s ease both';
+    this.rainRef.current.innerHTML = 'Ahora mismo no llueve en ninguna ciudad.';
+  }
+  fallbackRain() {
+    const seed = this.dayHourSeed();
+    const [name] = this.CITIES[seed % this.CITIES.length];
+    this.showRain('Suele llover en', name, null);
+  }
+  async fetchRain() {
+    try {
+      const cached = sessionStorage.getItem('roca_rain_v2');
+      if (cached) {
+        const p = JSON.parse(cached);
+        if (Date.now() - p.t < 600000) {
+          if (p.mode === 'silence') this.showSilence();
+          else { this.rainFound = p.mode === 'live'; this.showRain(p.prefix, p.city, p.tz); }
+          return;
         }
-        return a;
       }
-
-      function agregarCiclo() {
-        var vuelta = document.createElement('div');
-        vuelta.className = 'vuelta';
-        vuelta.style.height = (32 * PASO + 30) + 'vh';
-        var orden = barajar(32);
-        for (var slot = 0; slot < 32; slot++) {
-          var f = fotograma(orden[slot], slot);
-          vuelta.appendChild(f);
-          observador.observe(f);
-        }
-        collage.appendChild(vuelta);
-        var m = motivoVuelta();
-        collage.appendChild(m);
-        observador.observe(m);
+      const lat = this.CITIES.map(c => c[1]).join(',');
+      const lon = this.CITIES.map(c => c[2]).join(',');
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=weather_code,precipitation&timezone=auto`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('http ' + res.status);
+      const data = await res.json();
+      const arr = Array.isArray(data) ? data : [data];
+      const matches = [];
+      arr.forEach((loc, i) => {
+        const cur = loc.current || {};
+        if (this.WET.has(cur.weather_code) || (cur.precipitation || 0) > 0) matches.push({ name: this.CITIES[i][0], tz: loc.timezone });
+      });
+      if (matches.length) {
+        const seed = this.dayHourSeed();
+        const pick = matches[seed % matches.length];
+        this.rainFound = true;
+        this.showRain('Está lloviendo en', pick.name, pick.tz);
+        sessionStorage.setItem('roca_rain_v2', JSON.stringify({ t: Date.now(), mode: 'live', prefix: 'Está lloviendo en', city: pick.name, tz: pick.tz }));
+      } else {
+        this.showSilence();
+        sessionStorage.setItem('roca_rain_v2', JSON.stringify({ t: Date.now(), mode: 'silence' }));
       }
-
-      agregarCiclo();
-
-      /* Scroll infinito */
-      var cargando = false;
-      window.addEventListener('scroll', function () {
-        if (cargando) return;
-        var falta = document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
-        if (falta < window.innerHeight * 2) {
-          cargando = true;
-          agregarCiclo();
-          cargando = false;
-        }
-      }, { passive: true });
-
-      /* ——— ¿Dónde está lloviendo ahora mismo? ———
-         Consulta Open-Meteo (gratuita, sin clave) sobre ciudades lluviosas
-         del mundo y muestra la primera donde llueve, con su hora local. */
-      var CIUDADES = [
-        { n: 'Bergen',        lat: 60.39,  lon: 5.32,    tz: 'Europe/Oslo' },
-        { n: 'Londres',       lat: 51.51,  lon: -0.13,   tz: 'Europe/London' },
-        { n: 'Vancouver',     lat: 49.28,  lon: -123.12, tz: 'America/Vancouver' },
-        { n: 'Seattle',       lat: 47.61,  lon: -122.33, tz: 'America/Los_Angeles' },
-        { n: 'Bogotá',        lat: 4.71,   lon: -74.07,  tz: 'America/Bogota' },
-        { n: 'Singapur',      lat: 1.35,   lon: 103.82,  tz: 'Asia/Singapore' },
-        { n: 'Bombay',        lat: 19.08,  lon: 72.88,   tz: 'Asia/Kolkata' },
-        { n: 'Tokio',         lat: 35.68,  lon: 139.69,  tz: 'Asia/Tokyo' },
-        { n: 'Auckland',      lat: -36.85, lon: 174.76,  tz: 'Pacific/Auckland' },
-        { n: 'Dublín',        lat: 53.35,  lon: -6.26,   tz: 'Europe/Dublin' },
-        { n: 'Reikiavik',     lat: 64.15,  lon: -21.94,  tz: 'Atlantic/Reykjavik' },
-        { n: 'Hong Kong',     lat: 22.32,  lon: 114.17,  tz: 'Asia/Hong_Kong' },
-        { n: 'Kuala Lumpur',  lat: 3.14,   lon: 101.69,  tz: 'Asia/Kuala_Lumpur' },
-        { n: 'Taipéi',        lat: 25.03,  lon: 121.57,  tz: 'Asia/Taipei' },
-        { n: 'Manila',        lat: 14.60,  lon: 120.98,  tz: 'Asia/Manila' },
-        { n: 'Ámsterdam',     lat: 52.37,  lon: 4.90,    tz: 'Europe/Amsterdam' },
-        { n: 'São Paulo',     lat: -23.55, lon: -46.63,  tz: 'America/Sao_Paulo' },
-        { n: 'Ciudad de México', lat: 19.43, lon: -99.13, tz: 'America/Mexico_City' },
-        { n: 'Glasgow',       lat: 55.86,  lon: -4.25,   tz: 'Europe/London' },
-        { n: 'Cartagena',     lat: 10.39,  lon: -75.51,  tz: 'America/Bogota' }
-      ];
-
-      /* Códigos de Open-Meteo que significan lluvia (llovizna, lluvia,
-         chubascos o tormenta) */
-      function esLluvia(codigo) {
-        return (codigo >= 51 && codigo <= 67) || (codigo >= 80 && codigo <= 82) || (codigo >= 95 && codigo <= 99);
-      }
-
-      var etiqueta = document.querySelector('#lluvia .tenue');
-      var el = document.getElementById('reloj');
-      var lugarActual = null;
-
-      function horaLocal(tz) {
-        var hora = new Intl.DateTimeFormat('es-MX', {
-          timeZone: tz, hour: 'numeric', minute: '2-digit', hour12: true
-        }).format(new Date());
-        return hora.replace(/\s*[ap]\.?\s?m\.?/i, function (m) {
-          return m.toLowerCase().indexOf('a') > -1 ? 'am' : 'pm';
-        }).replace(/\s+/g, '');
-      }
-
-      function tic() {
-        if (lugarActual) {
-          etiqueta.textContent = 'Está lloviendo en ' + lugarActual.n + ' a las';
-          el.textContent = horaLocal(lugarActual.tz);
-        } else {
-          /* Todavía sin datos, o ningún lugar con lluvia: cae la gota en CDMX */
-          etiqueta.textContent = 'La gota cae en CDMX a las';
-          el.textContent = horaLocal('America/Mexico_City');
-        }
-      }
-
-      function buscarLluvia() {
-        var lats = CIUDADES.map(function (c) { return c.lat; }).join(',');
-        var lons = CIUDADES.map(function (c) { return c.lon; }).join(',');
-        fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lats +
-              '&longitude=' + lons + '&current=weather_code')
-          .then(function (r) { return r.json(); })
-          .then(function (datos) {
-            var lista = Array.isArray(datos) ? datos : [datos];
-            var lloviendo = [];
-            lista.forEach(function (d, i) {
-              if (d && d.current && esLluvia(d.current.weather_code)) lloviendo.push(CIUDADES[i]);
-            });
-            /* Elige una al azar entre las que llueve, para variar entre visitas */
-            lugarActual = lloviendo.length
-              ? lloviendo[Math.floor(Math.random() * lloviendo.length)]
-              : null;
-            tic();
-          })
-          .catch(function () { lugarActual = null; tic(); });
-      }
-
-      tic();
-      buscarLluvia();
-      setInterval(tic, 30000);            /* hora al minuto */
-      setInterval(buscarLluvia, 900000);  /* clima cada 15 min */
-    })();
-  </script>
-
+    } catch (e) {
+      this.fallbackRain();
+    }
+  }
+}
+</script>
 </body>
 </html>

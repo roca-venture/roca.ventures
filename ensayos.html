@@ -1,94 +1,69 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ensayos — roca.ventures</title>
-  <meta name="description" content="Ensayos de roca.ventures."/>
-  <link rel="icon" type="image/png" href="apple-touch-icon.png">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="styles.css"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
 </head>
 <body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;background:#EFEBE1;font-family:Archivo,system-ui,sans-serif;color:#2E3440;-webkit-font-smoothing:antialiased}
+  a{color:#2E3440;text-decoration:none;transition:opacity .3s ease}
+  a:hover{opacity:.55}
+</style>
+</helmet>
+<header style="position:fixed;top:clamp(16px,3vw,26px);left:0;right:0;display:flex;justify-content:center;padding:0 clamp(16px,3vw,32px);z-index:40">
+  <div style="display:flex;align-items:center;gap:clamp(14px,2vw,24px);padding:13px clamp(16px,2vw,24px);background:rgba(252,250,246,.86);border:1px solid rgba(46,52,64,.13);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)">
+    <a href="index.html" style="font-family:'Instrument Serif',serif;font-size:19px;letter-spacing:.01em;color:#2E3440">roca&nbsp;<span style="font-style:italic;color:#8D9BB5">ventures</span></a>
+    <span aria-hidden="true" style="width:1px;height:20px;background:rgba(46,52,64,.15)"></span>
+    <nav aria-label="Principal" style="display:flex;gap:clamp(14px,1.8vw,24px);font:500 11px/1 Archivo,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#5b6470">
+      <a href="ensayos.html" style="color:#2E3440">Ensayos</a>
+      <a href="acerca.html">Acerca</a>
+      <a href="inversiones.html">Inversiones</a>
+    </nav>
+  </div>
+</header>
 
-  <div class="motivo">——roca—ventures——</div>
+<main style="min-height:100vh;box-sizing:border-box;padding:clamp(120px,16vh,180px) clamp(24px,7vw,80px) 100px;display:flex;justify-content:center">
+  <article style="width:100%;max-width:680px">
+    <p style="margin:0 0 22px;font:500 11px/1 Archivo,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#9a9280">Ensayos</p>
+    <h1 style="margin:0 0 18px;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(2.1rem,5vw,3.4rem);line-height:1.05;color:#2E3440;text-wrap:balance">Escrito lentamente,<br>como cae la lluvia.</h1>
+    <p style="margin:0 0 8px;font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(1.1rem,2vw,1.4rem);line-height:1.4;color:#6b6455;max-width:34ch">Notas sobre la constancia, el tiempo y lo que se construye gota a gota.</p>
 
-  <nav>
-    <a href="/" class="logo">roca<em>.ventures</em></a>
-    <ul class="nav-links">
-      <li><a href="ensayos.html" class="activa">Ensayos</a></li>
-      <li><a href="acerca.html">Acerca</a></li>
-      <li><a href="inversiones.html">Inversiones</a></li>
-    </ul>
-  </nav>
+    <div style="margin-top:clamp(40px,6vh,72px);border-top:1px solid rgba(46,52,64,.14)">
 
-  <main class="wrap">
-
-    <section class="ensayos" aria-label="Ensayos" style="margin-top:3rem;">
-      <a class="ensayo surge" href="articulo.html">
-        <span class="num">VI</span>
-        <span class="titulo">Por qué la mayoría de los startups mueren de éxito, no de fracaso</span>
-        <span class="fecha">28 · 02 · 26</span>
+      <a href="#" style="display:block;padding:28px 0;border-bottom:1px solid rgba(46,52,64,.14)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">
+          <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(1.4rem,2.6vw,1.9rem);line-height:1.15;color:#2E3440">La paciencia como estrategia</h2>
+          <span style="font:500 12px/1 Archivo,sans-serif;letter-spacing:.06em;color:#a29a88;white-space:nowrap">2026</span>
+        </div>
+        <p style="margin:10px 0 0;font-size:15px;line-height:1.55;color:#6b6455;max-width:56ch">Por qué las mejores compañías se parecen más a la erosión que a la explosión.</p>
       </a>
-      <a class="ensayo surge" href="articulo.html">
-        <span class="num">V</span>
-        <span class="titulo">El mito de la productividad con IA</span>
-        <span class="fecha">15 · 02 · 26</span>
+
+      <a href="#" style="display:block;padding:28px 0;border-bottom:1px solid rgba(46,52,64,.14)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">
+          <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(1.4rem,2.6vw,1.9rem);line-height:1.15;color:#2E3440">Gutta cavat lapidem</h2>
+          <span style="font:500 12px/1 Archivo,sans-serif;letter-spacing:.06em;color:#a29a88;white-space:nowrap">2026</span>
+        </div>
+        <p style="margin:10px 0 0;font-size:15px;line-height:1.55;color:#6b6455;max-width:56ch">Una nota sobre Ovidio, la constancia y el origen de nuestro lema.</p>
       </a>
-      <a class="ensayo surge" href="articulo.html">
-        <span class="num">IV</span>
-        <span class="titulo">Construir en público sin perder la cabeza</span>
-        <span class="fecha">02 · 02 · 26</span>
+
+      <a href="#" style="display:block;padding:28px 0;border-bottom:1px solid rgba(46,52,64,.14)">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">
+          <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(1.4rem,2.6vw,1.9rem);line-height:1.15;color:#2E3440">Invertir en la erosión</h2>
+          <span style="font:500 12px/1 Archivo,sans-serif;letter-spacing:.06em;color:#a29a88;white-space:nowrap">2025</span>
+        </div>
+        <p style="margin:10px 0 0;font-size:15px;line-height:1.55;color:#6b6455;max-width:56ch">Cómo pensamos el tiempo como el principal activo de un fundador.</p>
       </a>
-      <a class="ensayo surge" href="articulo.html">
-        <span class="num">III</span>
-        <span class="titulo">Cuando el capital de riesgo se convierte en trampa</span>
-        <span class="fecha">18 · 01 · 26</span>
-      </a>
-      <a class="ensayo surge" href="articulo.html">
-        <span class="num">II</span>
-        <span class="titulo">El precio real de las decisiones irreversibles</span>
-        <span class="fecha">05 · 01 · 26</span>
-      </a>
-      <a class="ensayo surge" href="articulo.html">
-        <span class="num">I</span>
-        <span class="titulo">Lento es suave, suave es rápido</span>
-        <span class="fecha">20 · 12 · 25</span>
-      </a>
-    </section>
 
-    <section class="suscribir">
-      <h2>Un ensayo cada tanto</h2>
-      <p>Sin prisa y sin ruido. Escribimos cuando hay algo que decir, y llega directo a tu correo.</p>
-      <form class="sub-form" action="#" onsubmit="return false;">
-        <input type="email" placeholder="tu@correo.com" aria-label="Correo electrónico" required/>
-        <button type="submit">Suscribirse</button>
-      </form>
-    </section>
-
-  </main>
-
-  <footer>
-    <span>roca<em>.ventures</em> — MMXXVI</span>
-    <span class="reloj">El agua cae · <span id="reloj">—</span></span>
-  </footer>
-
-  <div class="motivo">——ventures—roca——</div>
-
-  <script>
-    (function () {
-      var el = document.getElementById('reloj');
-      function tic() {
-        var d = new Date();
-        el.textContent = String(d.getHours()).padStart(2,'0') + ':' +
-                         String(d.getMinutes()).padStart(2,'0') + ':' +
-                         String(d.getSeconds()).padStart(2,'0');
-      }
-      tic(); setInterval(tic, 1000);
-    })();
-  </script>
-
+    </div>
+  </article>
+</main>
+</x-dc>
 </body>
 </html>

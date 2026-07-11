@@ -1,88 +1,49 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cómo invertimos — roca.ventures</title>
-  <meta name="description" content="Cómo invierte roca.ventures: temprano, cerca y sin prisa."/>
-  <link rel="icon" type="image/png" href="apple-touch-icon.png">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="styles.css"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
 </head>
 <body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;background:#EFEBE1;font-family:Archivo,system-ui,sans-serif;color:#2E3440;-webkit-font-smoothing:antialiased}
+  a{color:#2E3440;text-decoration:none;transition:opacity .3s ease}
+  a:hover{opacity:.55}
+</style>
+</helmet>
+<header style="position:fixed;top:clamp(16px,3vw,26px);left:0;right:0;display:flex;justify-content:center;padding:0 clamp(16px,3vw,32px);z-index:40">
+  <div style="display:flex;align-items:center;gap:clamp(14px,2vw,24px);padding:13px clamp(16px,2vw,24px);background:rgba(252,250,246,.86);border:1px solid rgba(46,52,64,.13);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)">
+    <a href="index.html" style="font-family:'Instrument Serif',serif;font-size:19px;letter-spacing:.01em;color:#2E3440">roca&nbsp;<span style="font-style:italic;color:#8D9BB5">ventures</span></a>
+    <span aria-hidden="true" style="width:1px;height:20px;background:rgba(46,52,64,.15)"></span>
+    <nav aria-label="Principal" style="display:flex;gap:clamp(14px,1.8vw,24px);font:500 11px/1 Archivo,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#5b6470">
+      <a href="ensayos.html">Ensayos</a>
+      <a href="acerca.html">Acerca</a>
+      <a href="inversiones.html" style="color:#2E3440">Inversiones</a>
+    </nav>
+  </div>
+</header>
 
-  <div class="motivo">——roca—ventures——</div>
+<main style="min-height:100vh;box-sizing:border-box;padding:clamp(120px,16vh,180px) clamp(24px,7vw,80px) 100px;display:flex;justify-content:center">
+  <article style="width:100%;max-width:720px">
+    <p style="margin:0 0 22px;font:500 11px/1 Archivo,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#9a9280">Inversiones</p>
+    <h1 style="margin:0 0 24px;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(2.1rem,5vw,3.4rem);line-height:1.06;color:#2E3440;text-wrap:balance">Pocas apuestas.<br>Mucha paciencia.</h1>
+    <p style="margin:0 0 56px;font-size:clamp(16px,1.4vw,18px);line-height:1.7;color:#4f4838;max-width:58ch">Invertimos entre 250k y 2M en las primeras rondas de compañías de Iberoamérica, y acompañamos durante toda la travesía. Preferimos la constancia a la fuerza.</p>
 
-  <nav>
-    <a href="/" class="logo">roca<em>.ventures</em></a>
-    <ul class="nav-links">
-      <li><a href="ensayos.html">Ensayos</a></li>
-      <li><a href="acerca.html">Acerca</a></li>
-      <li><a href="inversiones.html" class="activa">Inversiones</a></li>
-    </ul>
-  </nav>
-
-  <main class="wrap">
-    <article class="carta surge">
-      <h1>Invertimos temprano, cerca y sin prisa.</h1>
-
-      <!-- ✏️ PLACEHOLDER: la fuerza de esta página está en lo concreto. Nada de «aportamos valor más allá del capital»: hechos específicos, verificables y hasta poco glamurosos. -->
-
-      <section>
-        <span class="romano">I. — Qué buscamos</span>
-        <p>[Tu criterio en una o dos frases discutibles. Por ejemplo: en qué etapa entras, en qué geografías, qué señales concretas te hacen decir que sí — y cuáles te hacen decir que no.]</p>
-      </section>
-
-      <section>
-        <span class="romano">II. — Cómo trabajamos</span>
-        <p>Cuando estas líneas dejen de ser plantilla, deberían parecerse a esto: cosas pequeñas, reales y comprobables.</p>
-        <ul class="concreto">
-          <li>[Ejemplo del tono: «Presentamos a una fundadora a sus tres primeros clientes.»] <span>— sustituir por un hecho real</span></li>
-          <li>[Ejemplo del tono: «Ayudamos a cerrar la primera contratación con mensajes en frío, uno por uno.»] <span>— sustituir por un hecho real</span></li>
-          <li>[Ejemplo del tono: «Contestamos el teléfono un domingo. Varias veces.»] <span>— sustituir por un hecho real</span></li>
-        </ul>
-      </section>
-
-      <section>
-        <span class="romano">III. — Lo que no somos</span>
-        <p>[El filtro negativo, dicho con elegancia: qué tipo de proyecto o fundador no encaja aquí. Decirlo ahorra tiempo a todos y da más credibilidad que cualquier promesa.]</p>
-      </section>
-
-      <section>
-        <span class="romano">IV. — Escríbenos</span>
-        <p>[Cómo llegar a ti: correo, qué incluir en el primer mensaje, qué pueden esperar como respuesta y en cuánto tiempo. Un compromiso concreto —«contestamos en 48 horas»— vale oro si se cumple.]</p>
-      </section>
-
-      <p class="firma">— roca.ventures</p>
-    </article>
-
-    <blockquote class="cita">
-      «La gota horada la roca, no por su fuerza, sino por su constancia.»
-      <span>A partir de Ovidio</span>
-    </blockquote>
-  </main>
-
-  <footer>
-    <span>roca<em>.ventures</em> — MMXXVI</span>
-    <span class="reloj">El agua cae · <span id="reloj">—</span></span>
-  </footer>
-
-  <div class="motivo">——ventures—roca——</div>
-
-  <script>
-    (function () {
-      var el = document.getElementById('reloj');
-      function tic() {
-        var d = new Date();
-        el.textContent = String(d.getHours()).padStart(2,'0') + ':' +
-                         String(d.getMinutes()).padStart(2,'0') + ':' +
-                         String(d.getSeconds()).padStart(2,'0');
-      }
-      tic(); setInterval(tic, 1000);
-    })();
-  </script>
-
+    <p style="margin:0 0 20px;font:500 11px/1 Archivo,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#9a9280">Portafolio</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px">
+      <div style="aspect-ratio:16/10;background:repeating-linear-gradient(45deg,#e3ddcd 0 10px,#ded7c4 10px 20px);display:flex;align-items:center;justify-content:center;font:500 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.1em;color:#8a8272">logo · compañía</div>
+      <div style="aspect-ratio:16/10;background:repeating-linear-gradient(45deg,#d6dfd2 0 10px,#cfd9ca 10px 20px);display:flex;align-items:center;justify-content:center;font:500 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.1em;color:#7f8a78">logo · compañía</div>
+      <div style="aspect-ratio:16/10;background:repeating-linear-gradient(45deg,#cfdae2 0 10px,#c7d3dd 10px 20px);display:flex;align-items:center;justify-content:center;font:500 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.1em;color:#7a8794">logo · compañía</div>
+    </div>
+    <p style="margin:28px 0 0;font-size:14px;line-height:1.6;color:#8a8272">Portafolio en construcción — <a href="mailto:hola@roca.ventures" style="border-bottom:1px solid rgba(46,52,64,.3);padding-bottom:1px">preséntanos tu compañía</a>.</p>
+  </article>
+</main>
+</x-dc>
 </body>
 </html>

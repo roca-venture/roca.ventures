@@ -1,84 +1,51 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Una carta — roca.ventures</title>
-  <meta name="description" content="Una carta sobre por qué existe roca.ventures."/>
-  <link rel="icon" type="image/png" href="apple-touch-icon.png">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="styles.css"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
 </head>
 <body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;background:#EFEBE1;font-family:Archivo,system-ui,sans-serif;color:#2E3440;-webkit-font-smoothing:antialiased}
+  a{color:#2E3440;text-decoration:none;transition:opacity .3s ease}
+  a:hover{opacity:.55}
+</style>
+</helmet>
+<header style="position:fixed;top:clamp(16px,3vw,26px);left:0;right:0;display:flex;justify-content:center;padding:0 clamp(16px,3vw,32px);z-index:40">
+  <div style="display:flex;align-items:center;gap:clamp(14px,2vw,24px);padding:13px clamp(16px,2vw,24px);background:rgba(252,250,246,.86);border:1px solid rgba(46,52,64,.13);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)">
+    <a href="index.html" style="font-family:'Instrument Serif',serif;font-size:19px;letter-spacing:.01em;color:#2E3440">roca&nbsp;<span style="font-style:italic;color:#8D9BB5">ventures</span></a>
+    <span aria-hidden="true" style="width:1px;height:20px;background:rgba(46,52,64,.15)"></span>
+    <nav aria-label="Principal" style="display:flex;gap:clamp(14px,1.8vw,24px);font:500 11px/1 Archivo,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#5b6470">
+      <a href="ensayos.html">Ensayos</a>
+      <a href="acerca.html" style="color:#2E3440">Acerca</a>
+      <a href="inversiones.html">Inversiones</a>
+    </nav>
+  </div>
+</header>
 
-  <div class="motivo">——roca—ventures——</div>
+<main style="min-height:100vh;box-sizing:border-box;padding:clamp(120px,16vh,180px) clamp(24px,7vw,80px) 100px;display:flex;justify-content:center">
+  <article style="width:100%;max-width:640px">
+    <p style="margin:0 0 22px;font:500 11px/1 Archivo,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#9a9280">Acerca</p>
+    <h1 style="margin:0 0 28px;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(2.1rem,5vw,3.4rem);line-height:1.06;color:#2E3440;text-wrap:balance">Somos roca en movimiento.</h1>
 
-  <nav>
-    <a href="/" class="logo">roca<em>.ventures</em></a>
-    <ul class="nav-links">
-      <li><a href="ensayos.html">Ensayos</a></li>
-      <li><a href="acerca.html" class="activa">Acerca</a></li>
-      <li><a href="inversiones.html">Inversiones</a></li>
-    </ul>
-  </nav>
+    <p style="margin:0 0 20px;font-size:clamp(16px,1.4vw,18px);line-height:1.7;color:#4f4838;max-width:60ch">roca ventures acompaña a fundadores que entienden el tiempo como aliado. Invertimos temprano y nos quedamos: no buscamos el golpe de fuerza, sino la constancia que, gota a gota, termina por dar forma a la piedra.</p>
 
-  <main class="wrap">
-    <article class="carta surge">
-      <h1>Una carta, en lugar de una página «acerca de».</h1>
+    <p style="margin:0 0 44px;font-size:clamp(16px,1.4vw,18px);line-height:1.7;color:#4f4838;max-width:60ch">Trabajamos con compañías en sus primeros años, en tecnología, clima e infraestructura de Iberoamérica. Pocas apuestas, mucha paciencia.</p>
 
-      <!-- ✏️ PLACEHOLDER: sustituye cada sección por tu texto real. La estructura en numerales romanos es deliberada: léela como un ensayo, no como un folleto. -->
-
-      <section>
-        <span class="romano">I.</span>
-        <p>Este sitio existe porque creemos que las mejores ideas no se gritan: se sedimentan. Capa sobre capa, ensayo sobre ensayo, hasta que un día lo que parecía arena resulta ser piedra.</p>
-        <p>[Aquí va tu historia: quién eres, de dónde vienes, por qué escribes e inviertes. Dos o tres párrafos honestos valen más que veinte de biografía.]</p>
-      </section>
-
-      <section>
-        <span class="romano">II.</span>
-        <p>[Qué crees: tu tesis sobre la tecnología, el capital y el tiempo. Una afirmación discutible y concreta vale más que diez lugares comunes. Ejemplo del tono buscado: «El capital de riesgo es un oficio de servicio, y los oficios de servicio no escalan».]</p>
-      </section>
-
-      <section>
-        <span class="romano">III.</span>
-        <p>[Qué haces en la práctica: escribes ensayos, inviertes temprano, acompañas de cerca. Sé específico y verificable. Las anécdotas concretas —incluso las poco glamurosas— construyen más credibilidad que cualquier adjetivo.]</p>
-      </section>
-
-      <section>
-        <span class="romano">IV.</span>
-        <p>[Una invitación: a quién quieres que te escriba y cómo. Deja claro qué tipo de persona encaja aquí y cuál no. Un buen filtro dicho con elegancia ahorra cien conversaciones.]</p>
-      </section>
-
-      <p class="firma">— roca.ventures</p>
-    </article>
-
-    <blockquote class="cita">
-      «La gota horada la roca, no por su fuerza, sino por su constancia.»
-      <span>A partir de Ovidio</span>
+    <blockquote style="margin:0 0 44px;padding-left:22px;border-left:2px solid rgba(46,52,64,.18)">
+      <p style="margin:0 0 8px;font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(1.2rem,2.4vw,1.6rem);line-height:1.35;color:#2E3440">«La gota horada la roca, no por su fuerza, sino por su constancia.»</p>
+      <cite style="font:500 11px/1 Archivo,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#a29a88;font-style:normal">Ovidio · Epistulae ex Ponto</cite>
     </blockquote>
-  </main>
 
-  <footer>
-    <span>roca<em>.ventures</em> — MMXXVI</span>
-    <span class="reloj">El agua cae · <span id="reloj">—</span></span>
-  </footer>
-
-  <div class="motivo">——ventures—roca——</div>
-
-  <script>
-    (function () {
-      var el = document.getElementById('reloj');
-      function tic() {
-        var d = new Date();
-        el.textContent = String(d.getHours()).padStart(2,'0') + ':' +
-                         String(d.getMinutes()).padStart(2,'0') + ':' +
-                         String(d.getSeconds()).padStart(2,'0');
-      }
-      tic(); setInterval(tic, 1000);
-    })();
-  </script>
-
+    <p style="margin:0;font-size:15px;line-height:1.6;color:#6b6455">Escríbenos a <a href="mailto:hola@roca.ventures" style="border-bottom:1px solid rgba(46,52,64,.3);padding-bottom:1px">hola@roca.ventures</a></p>
+  </article>
+</main>
+</x-dc>
 </body>
 </html>
