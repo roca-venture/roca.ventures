@@ -101,7 +101,7 @@ class Component extends DCLogic {
     const p = this.panelRef.current, ov = this.overlayRef.current;
     if (!p || !ov) return;
     this._curKey = key;
-    p.innerHTML = this.PANELS[key] || '';
+    p.innerHTML = (key === 'ensayos') ? this.ensayosPanel() : (this.PANELS[key] || '');
     if (this.scrollRef.current) this.scrollRef.current.scrollTop = 0;
     ov.style.display = 'block';
     void ov.offsetWidth;
@@ -132,6 +132,7 @@ class Component extends DCLogic {
 
   EMBLEM = '';
   DOTTED = '<div style="border-top:1.5px dotted rgba(46,52,64,.32);margin:38px 0 34px"></div>';
+  ENSAYOS = [];
 
   PANELS = {
     acerca:
@@ -145,15 +146,6 @@ class Component extends DCLogic {
       '<blockquote style="margin:0 0 40px;padding-left:22px;border-left:2px solid rgba(46,52,64,.18)"><p style="margin:0 0 8px;font-family:\'Instrument Serif\',serif;font-style:italic;font-size:clamp(1.2rem,2.4vw,1.6rem);line-height:1.35;color:#2E3440">&laquo;La gota horada la roca, no por su fuerza, sino por su constancia.&raquo;</p><cite style="font:500 11px/1 Archivo,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#a29a88;font-style:normal">Ovidio &middot; Epistulae ex Ponto</cite></blockquote>' +
       '<p style="margin:0;font-size:15px;line-height:1.6;color:#6b6455">Escr&iacute;benos a <a href="mailto:hola@roca.ventures" style="border-bottom:1px solid rgba(46,52,64,.3);padding-bottom:1px">hola@roca.ventures</a></p>' +
       '</div>',
-    ensayos:
-      '<div style="display:flex;justify-content:space-between;font:500 10.5px/1.6 Archivo,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#a9a08c;margin-bottom:44px"><span>2026</span><span style="text-align:right">Ensayos</span></div>' +
-      this.EMBLEM +
-      '<h1 style="margin:0 0 8px;text-align:center;font-family:\'Instrument Serif\',serif;font-weight:400;font-size:clamp(2rem,5vw,3.1rem);line-height:1.04;color:#2E3440;text-wrap:balance">Escrito lentamente,<br>como cae la lluvia.</h1>' +
-      '<p style="margin:0 auto;max-width:36ch;text-align:center;font-family:\'Instrument Serif\',serif;font-style:italic;font-size:clamp(1.05rem,2vw,1.3rem);line-height:1.4;color:#8a7f68">Notas sobre la constancia, el tiempo y lo que se construye gota a gota.</p>' +
-      this.DOTTED +
-      this.essayRow('La paciencia como estrategia', '2026', 'Por qu&eacute; las mejores compa&ntilde;&iacute;as se parecen m&aacute;s a la erosi&oacute;n que a la explosi&oacute;n.') +
-      this.essayRow('Gutta cavat lapidem', '2026', 'Una nota sobre Ovidio, la constancia y el origen de nuestro lema.') +
-      this.essayRow('Invertir en la erosi&oacute;n', '2025', 'C&oacute;mo pensamos el tiempo como el principal activo de un fundador.'),
     inversiones:
       '<div style="display:flex;justify-content:space-between;font:500 10.5px/1.6 Archivo,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#a9a08c;margin-bottom:44px"><span>2026</span><span style="text-align:right">Portafolio</span></div>' +
       this.EMBLEM +
@@ -168,10 +160,29 @@ class Component extends DCLogic {
       '</div><p style="margin:26px 0 0;font-size:14px;line-height:1.6;color:#8a8272">Portafolio en construcci&oacute;n &mdash; <a href="mailto:hola@roca.ventures" style="border-bottom:1px solid rgba(46,52,64,.3);padding-bottom:1px">pres&eacute;ntanos tu compa&ntilde;&iacute;a</a>.</p></div>',
   };
 
-  essayRow(title, year, desc) {
-    return '<a href="#" onclick="return false" style="display:block;padding:26px 0;border-bottom:1px solid rgba(46,52,64,.14);text-decoration:none">' +
-      '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap"><h2 style="margin:0;font-family:\'Instrument Serif\',serif;font-weight:400;font-size:clamp(1.35rem,2.6vw,1.85rem);line-height:1.15;color:#2E3440">' + title + '</h2><span style="font:500 12px/1 Archivo,sans-serif;letter-spacing:.06em;color:#a29a88;white-space:nowrap">' + year + '</span></div>' +
-      '<p style="margin:10px 0 0;font-size:15px;line-height:1.55;color:#6b6455;max-width:56ch">' + desc + '</p></a>';
+  essayRow(e) {
+    return '<a href="articulo.html?e=' + encodeURIComponent(e.slug) + '" style="display:block;padding:26px 0;border-bottom:1px solid rgba(46,52,64,.14);text-decoration:none">' +
+      '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap"><h2 style="margin:0;font-family:\'Instrument Serif\',serif;font-weight:400;font-size:clamp(1.35rem,2.6vw,1.85rem);line-height:1.15;color:#2E3440">' + e.titulo + '</h2><span style="font:500 12px/1 Archivo,sans-serif;letter-spacing:.06em;color:#a29a88;white-space:nowrap">' + e.fecha + '</span></div>' +
+      '<p style="margin:10px 0 0;font-size:15px;line-height:1.55;color:#6b6455;max-width:56ch">' + e.resumen + '</p></a>';
+  }
+  ensayosPanel() {
+    var rows = (this.ENSAYOS && this.ENSAYOS.length)
+      ? this.ENSAYOS.map(e => this.essayRow(e)).join('')
+      : '<p style="text-align:center;font-family:\'Instrument Serif\',serif;font-style:italic;color:#8a8272">Cargando ensayos&hellip;</p>';
+    return '<div style="display:flex;justify-content:space-between;font:500 10.5px/1.6 Archivo,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#a9a08c;margin-bottom:44px"><span>2026</span><span style="text-align:right">Ensayos</span></div>' +
+      '<h1 style="margin:0 0 8px;text-align:center;font-family:\'Instrument Serif\',serif;font-weight:400;font-size:clamp(2rem,5vw,3.1rem);line-height:1.04;color:#2E3440;text-wrap:balance">Escrito lentamente,<br>como cae la lluvia.</h1>' +
+      '<p style="margin:0 auto;max-width:36ch;text-align:center;font-family:\'Instrument Serif\',serif;font-style:italic;font-size:clamp(1.05rem,2vw,1.3rem);line-height:1.4;color:#8a7f68">Notas sobre la constancia, el tiempo y lo que se construye gota a gota.</p>' +
+      this.DOTTED + rows;
+  }
+  async fetchEnsayos() {
+    try {
+      var r = await fetch('ensayos/index.json', { cache: 'no-cache' });
+      if (!r.ok) return;
+      this.ENSAYOS = await r.json();
+      if (this._panelOpen && this._curKey === 'ensayos' && this.panelRef.current) {
+        this.panelRef.current.innerHTML = this.ensayosPanel();
+      }
+    } catch (e) {}
   }
 
   // ---- palette ----
@@ -220,6 +231,7 @@ class Component extends DCLogic {
     this.bindInput();
     this.bindNav();
     this.fetchRain();
+    this.fetchEnsayos();
     this.raf = requestAnimationFrame(this.tick);
     document.addEventListener('visibilitychange', this.onVis);
     window.addEventListener('resize', this.onResize);

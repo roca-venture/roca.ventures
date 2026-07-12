@@ -1,68 +1,111 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lento es suave, suave es rápido — roca.ventures</title>
-  <meta name="description" content="Ensayo I — Lento es suave, suave es rápido."/>
-  <link rel="icon" type="image/png" href="apple-touch-icon.png">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="styles.css"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ensayo — roca.ventures</title>
+<link rel="icon" type="image/png" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="./marked.min.js"></script>
+<style>
+  html,body{margin:0;background:#EFEBE1;font-family:Archivo,system-ui,sans-serif;color:#2E3440;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  a{color:#2E3440;text-decoration:none;transition:opacity .3s ease}
+  a:hover{opacity:.55}
+
+  header{position:fixed;top:clamp(16px,3vw,26px);left:0;right:0;display:flex;justify-content:center;padding:0 clamp(16px,3vw,32px);z-index:40}
+  header .bar{display:flex;align-items:center;gap:clamp(14px,2vw,24px);padding:13px clamp(16px,2vw,24px);background:rgba(252,250,246,.86);border:1px solid rgba(46,52,64,.13);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  header nav{display:flex;gap:clamp(14px,1.8vw,24px);font:500 11px/1 Archivo,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#5b6470}
+
+  main{min-height:100vh;box-sizing:border-box;padding:clamp(120px,16vh,180px) clamp(24px,7vw,80px) 120px;display:flex;justify-content:center}
+  article{width:100%;max-width:680px}
+
+  .meta{margin:0 0 20px;font:500 11px/1 Archivo,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#9a9280}
+  .titulo{margin:0 0 40px;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(2.1rem,5vw,3.4rem);line-height:1.06;color:#2E3440;text-wrap:balance}
+
+  /* --- cuerpo del ensayo (Markdown renderizado) --- */
+  .cuerpo{font-size:clamp(16px,1.35vw,18px);line-height:1.75;color:#4f4838}
+  .cuerpo > *:first-child{margin-top:0}
+  .cuerpo h2{margin:52px 0 18px;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(1.5rem,3vw,2rem);line-height:1.2;color:#2E3440}
+  .cuerpo h3{margin:40px 0 14px;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(1.25rem,2.4vw,1.55rem);color:#2E3440}
+  .cuerpo p{margin:0 0 22px}
+  .cuerpo a{border-bottom:1px solid rgba(46,52,64,.3);padding-bottom:1px}
+  .cuerpo ul,.cuerpo ol{margin:0 0 22px;padding-left:1.3em}
+  .cuerpo li{margin:0 0 8px}
+  .cuerpo strong{font-weight:600;color:#2E3440}
+  .cuerpo em{font-style:italic}
+  .cuerpo hr{border:0;border-top:1.5px dotted rgba(46,52,64,.32);margin:44px 0}
+  .cuerpo blockquote{margin:36px 0;padding-left:22px;border-left:2px solid rgba(46,52,64,.18);font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(1.2rem,2.4vw,1.55rem);line-height:1.4;color:#2E3440}
+  .cuerpo blockquote p{margin:0 0 8px}
+  .cuerpo blockquote em{font-style:normal;font-family:Archivo,sans-serif;font-size:12px;letter-spacing:.06em;color:#a29a88}
+  .cuerpo code{font:500 .9em/1 ui-monospace,Menlo,monospace;background:rgba(46,52,64,.06);padding:2px 6px;border-radius:3px}
+  .cuerpo img{max-width:100%;height:auto;display:block;margin:32px auto}
+
+  .volver{display:inline-block;margin-top:56px;padding-top:26px;border-top:1px solid rgba(46,52,64,.14);width:100%;box-sizing:border-box;font:500 12px/1 Archivo,sans-serif;letter-spacing:.08em;color:#8a8272}
+  .aviso{font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(1.3rem,3vw,1.8rem);color:#6b6455}
+</style>
 </head>
 <body>
+<header>
+  <div class="bar">
+    <a href="/" style="font-family:'Instrument Serif',serif;font-size:19px;letter-spacing:.01em;color:#2E3440">roca&nbsp;<span style="font-style:italic;color:#8D9BB5">ventures</span></a>
+    <span aria-hidden="true" style="width:1px;height:20px;background:rgba(46,52,64,.15)"></span>
+    <nav aria-label="Principal">
+      <a href="ensayos.html" style="color:#2E3440">Ensayos</a>
+      <a href="acerca.html">Acerca</a>
+      <a href="inversiones.html">Inversiones</a>
+    </nav>
+  </div>
+</header>
 
-  <div class="motivo">——roca—ventures——</div>
+<main>
+  <article>
+    <p class="meta" id="meta"></p>
+    <h1 class="titulo" id="titulo">Cargando…</h1>
+    <div class="cuerpo" id="cuerpo"></div>
+    <a class="volver" href="ensayos.html">← Todos los ensayos</a>
+  </article>
+</main>
 
-  <nav>
-    <a href="/" class="logo">roca<em>.ventures</em></a>
-    <ul class="nav-links">
-      <li><a href="ensayos.html" class="activa">Ensayos</a></li>
-      <li><a href="acerca.html">Acerca</a></li>
-      <li><a href="inversiones.html">Inversiones</a></li>
-    </ul>
-  </nav>
+<script>
+(async function () {
+  var $meta = document.getElementById('meta');
+  var $titulo = document.getElementById('titulo');
+  var $cuerpo = document.getElementById('cuerpo');
 
-  <main class="wrap">
-    <article class="articulo surge">
-      <p class="meta">Ensayo I · 20 de diciembre de 2025</p>
-      <h1>Lento es suave, suave es rápido</h1>
+  function noEncontrado(msg) {
+    document.title = 'Ensayo no encontrado — roca.ventures';
+    $meta.textContent = '';
+    $titulo.textContent = 'Ensayo no encontrado';
+    $cuerpo.innerHTML = '<p class="aviso">' + (msg || 'Este ensayo no existe o aún no se ha publicado.') + '</p>';
+  }
 
-      <!-- ✏️ PLANTILLA DE ARTÍCULO: duplica este archivo por cada ensayo (ej. lento-es-suave.html), cambia <title>, meta, fecha y cuerpo, y enlázalo desde index.html. -->
+  var slug = new URLSearchParams(location.search).get('e');
+  if (!slug || !/^[a-z0-9-]+$/i.test(slug)) { noEncontrado('No se indicó qué ensayo abrir.'); return; }
 
-      <p>[Primer párrafo: la afirmación central del ensayo, dicha sin rodeos. El lector decide en las primeras tres líneas si sigue leyendo.]</p>
-      <p>[Desarrollo: un argumento por párrafo. Ejemplos concretos, números si los hay, y al menos una idea con la que alguien razonable podría estar en desacuerdo.]</p>
-      <p>[Cierre: vuelve a la afirmación inicial con lo ganado en el camino. Sin moraleja, sin llamado a la acción forzado.]</p>
+  try {
+    // 1) metadatos desde el manifiesto
+    var idx = await fetch('ensayos/index.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : []; });
+    var meta = (idx || []).find(function (x) { return x.slug === slug; });
 
-      <a class="volver" href="ensayos.html">← Todos los ensayos</a>
-    </article>
+    // 2) cuerpo del ensayo en Markdown
+    var res = await fetch('ensayos/' + slug + '.md', { cache: 'no-cache' });
+    if (!res.ok) { noEncontrado(); return; }
+    var md = await res.text();
 
-    <blockquote class="cita">
-      «La gota horada la roca, no por su fuerza, sino por su constancia.»
-      <span>A partir de Ovidio</span>
-    </blockquote>
-  </main>
-
-  <footer>
-    <span>roca<em>.ventures</em> — MMXXVI</span>
-    <span class="reloj">El agua cae · <span id="reloj">—</span></span>
-  </footer>
-
-  <div class="motivo">——ventures—roca——</div>
-
-  <script>
-    (function () {
-      var el = document.getElementById('reloj');
-      function tic() {
-        var d = new Date();
-        el.textContent = String(d.getHours()).padStart(2,'0') + ':' +
-                         String(d.getMinutes()).padStart(2,'0') + ':' +
-                         String(d.getSeconds()).padStart(2,'0');
-      }
-      tic(); setInterval(tic, 1000);
-    })();
-  </script>
-
+    var titulo = (meta && meta.titulo) || slug;
+    var fecha = (meta && meta.fecha) || '';
+    document.title = titulo + ' — roca.ventures';
+    $meta.textContent = fecha ? ('Ensayo · ' + fecha) : 'Ensayo';
+    $titulo.textContent = titulo;
+    $cuerpo.innerHTML = marked.parse(md);
+    window.scrollTo(0, 0);
+  } catch (e) {
+    noEncontrado('No se pudo cargar el ensayo.');
+  }
+})();
+</script>
 </body>
 </html>

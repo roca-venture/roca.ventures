@@ -38,35 +38,30 @@
     <h1 style="margin:0 0 18px;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(2.1rem,5vw,3.4rem);line-height:1.05;color:#2E3440;text-wrap:balance">Escrito lentamente,<br>como cae la lluvia.</h1>
     <p style="margin:0 0 8px;font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(1.1rem,2vw,1.4rem);line-height:1.4;color:#6b6455;max-width:34ch">Notas sobre la constancia, el tiempo y lo que se construye gota a gota.</p>
 
-    <div style="margin-top:clamp(40px,6vh,72px);border-top:1px solid rgba(46,52,64,.14)">
-
-      <a href="#" style="display:block;padding:28px 0;border-bottom:1px solid rgba(46,52,64,.14)">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">
-          <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(1.4rem,2.6vw,1.9rem);line-height:1.15;color:#2E3440">La paciencia como estrategia</h2>
-          <span style="font:500 12px/1 Archivo,sans-serif;letter-spacing:.06em;color:#a29a88;white-space:nowrap">2026</span>
-        </div>
-        <p style="margin:10px 0 0;font-size:15px;line-height:1.55;color:#6b6455;max-width:56ch">Por qué las mejores compañías se parecen más a la erosión que a la explosión.</p>
-      </a>
-
-      <a href="#" style="display:block;padding:28px 0;border-bottom:1px solid rgba(46,52,64,.14)">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">
-          <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(1.4rem,2.6vw,1.9rem);line-height:1.15;color:#2E3440">Gutta cavat lapidem</h2>
-          <span style="font:500 12px/1 Archivo,sans-serif;letter-spacing:.06em;color:#a29a88;white-space:nowrap">2026</span>
-        </div>
-        <p style="margin:10px 0 0;font-size:15px;line-height:1.55;color:#6b6455;max-width:56ch">Una nota sobre Ovidio, la constancia y el origen de nuestro lema.</p>
-      </a>
-
-      <a href="#" style="display:block;padding:28px 0;border-bottom:1px solid rgba(46,52,64,.14)">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">
-          <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(1.4rem,2.6vw,1.9rem);line-height:1.15;color:#2E3440">Invertir en la erosión</h2>
-          <span style="font:500 12px/1 Archivo,sans-serif;letter-spacing:.06em;color:#a29a88;white-space:nowrap">2025</span>
-        </div>
-        <p style="margin:10px 0 0;font-size:15px;line-height:1.55;color:#6b6455;max-width:56ch">Cómo pensamos el tiempo como el principal activo de un fundador.</p>
-      </a>
-
+    <div id="lista-ensayos" style="margin-top:clamp(40px,6vh,72px);border-top:1px solid rgba(46,52,64,.14)">
+      <p style="padding:28px 0;color:#8a8272;font-family:'Instrument Serif',serif;font-style:italic">Cargando ensayos&hellip;</p>
     </div>
   </article>
 </main>
+<script>
+(async function () {
+  var cont = document.getElementById('lista-ensayos');
+  function row(e) {
+    return '<a href="articulo.html?e=' + encodeURIComponent(e.slug) + '" style="display:block;padding:28px 0;border-bottom:1px solid rgba(46,52,64,.14)">' +
+      '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap">' +
+      '<h2 style="margin:0;font-family:\'Instrument Serif\',serif;font-weight:400;font-size:clamp(1.4rem,2.6vw,1.9rem);line-height:1.15;color:#2E3440">' + e.titulo + '</h2>' +
+      '<span style="font:500 12px/1 Archivo,sans-serif;letter-spacing:.06em;color:#a29a88;white-space:nowrap">' + e.fecha + '</span></div>' +
+      '<p style="margin:10px 0 0;font-size:15px;line-height:1.55;color:#6b6455;max-width:56ch">' + e.resumen + '</p></a>';
+  }
+  try {
+    var idx = await fetch('ensayos/index.json', { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : []; });
+    if (!idx.length) { cont.innerHTML = '<p style="padding:28px 0;color:#8a8272;font-family:\'Instrument Serif\',serif;font-style:italic">Aún no hay ensayos publicados.</p>'; return; }
+    cont.innerHTML = idx.map(row).join('');
+  } catch (e) {
+    cont.innerHTML = '<p style="padding:28px 0;color:#8a8272;font-family:\'Instrument Serif\',serif;font-style:italic">No se pudieron cargar los ensayos.</p>';
+  }
+})();
+</script>
 </x-dc>
 </body>
 </html>

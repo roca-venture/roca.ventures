@@ -7,3 +7,6 @@ Old/
 # macOS cruft
 .DS_Store
 **/.DS_Store
+
+# Script de publicación (local, no se publica)
+publicar.sh
