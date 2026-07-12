@@ -85,7 +85,7 @@ class Component extends DCLogic {
     e.preventDefault();
     const a = e.currentTarget;
     const key = (a.dataset.panel) || (a.getAttribute('href') || '').replace(/\.(?:dc\.)?html$/, '');
-    if (!this.PANELS[key]) return;
+    if (key !== 'ensayos' && !this.PANELS[key]) return;
     if (this._panelOpen && this._curKey === key) { this.close(); return; }
     this.openPanel(key);
   };
