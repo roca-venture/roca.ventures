@@ -14,7 +14,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+<link rel="preload" href="/fonts/goldman-sans-light-hero.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+  /* Goldman Sans Light — subset a los caracteres del hero de portada. Uso exclusivo del h1 principal. */
+  @font-face{font-family:'Goldman Sans Hero';src:url('/fonts/goldman-sans-light-hero.woff2') format('woff2');font-weight:300;font-style:normal;font-display:block}
   html,body{margin:0;height:100%;overflow:hidden;background:#EFEBE1;font-family:Archivo,system-ui,sans-serif;color:#2E3440;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
   a{color:#2E3440;text-decoration:none;transition:opacity .3s ease}
   a:hover{opacity:.55}
@@ -30,7 +33,7 @@
 </div>
 
 <div ref="{{ heroRef }}" style="position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:clamp(340px,44vw,560px);height:clamp(190px,25vw,290px);z-index:20;pointer-events:none;background:rgba(248,246,240,.40);backdrop-filter:blur(4px) saturate(1.02);-webkit-backdrop-filter:blur(4px) saturate(1.02);-webkit-mask-image:radial-gradient(125% 130% at 50% 50%, #000 42%, rgba(0,0,0,0) 80%);mask-image:radial-gradient(125% 130% at 50% 50%, #000 42%, rgba(0,0,0,0) 80%);transition:opacity .6s ease,filter .6s ease">
-  <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-style:italic;font-size:clamp(1.8rem,4vw,3rem);line-height:1.1;letter-spacing:.005em;color:#2E3440;text-align:center;text-wrap:balance">El silicio<br>tambi&eacute;n es roca.</h1>
+  <h1 style="margin:0;font-family:'Goldman Sans Hero','Instrument Serif',serif;font-weight:300;font-style:normal;font-size:clamp(1.8rem,4vw,3rem);line-height:1.15;letter-spacing:-.005em;color:#2E3440;text-align:center;text-wrap:balance">El silicio<br>tambi&eacute;n es roca.</h1>
 </div>
 
 <header style="position:fixed;top:clamp(16px,3vw,26px);left:0;right:0;display:flex;justify-content:center;align-items:flex-start;padding:0 clamp(16px,3vw,32px);z-index:40;pointer-events:none">
@@ -359,7 +362,7 @@ class Component extends DCLogic {
     this._mode = this.props.fondo || 'Lluvia';
 
     const drift = (this.props.autoDrift ?? true) && !this.reduced;
-    const speed = this.props.driftSpeed ?? 1;
+    const speed = this.props.driftSpeed ?? 1.5; // 1.5 = ritmo original x1.5. Sube o baja SOLO este numero junto con el 225 de drawLluvia.
     if (drift && !this.dragging && (now - this.lastInput) > 6000) {
       this.targetX += 0.18 * speed * dt;
       this.targetY += 0.12 * speed * dt;
@@ -423,7 +426,7 @@ class Component extends DCLogic {
     const ctx = this.ctx, t = (this.reduced ? 0 : now / 1000);
     ctx.lineCap = 'round';
     for (const d of this.drops) {
-      const fall = (t * (150 * d.layer)) % this.dropsH;
+      const fall = (t * (225 * d.layer)) % this.dropsH; // 225 = 150 original x1.5. Mantener en proporcion con driftSpeed.
       const oxp = this.offsetX * d.layer, oyp = this.offsetY * d.layer;
       const sx = this.mod(d.x - oxp, this.dropsW), sy = this.mod(d.y + fall - oyp, this.dropsH);
       ctx.strokeStyle = `rgba(120,150,170,${d.a})`;

@@ -10,3 +10,6 @@ Old/
 
 # Script de publicación (local, no se publica)
 publicar.sh
+
+# Fuentes originales (TTF completos, no se publican — solo el subset en fonts/)
+_fontsrc/
