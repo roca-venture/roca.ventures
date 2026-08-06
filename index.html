@@ -23,14 +23,14 @@
   @media (max-width:1120px){#rocaRain{left:0!important;right:0!important;top:auto!important}}
   @media (max-width:560px){#rocaRain{font-size:11.5px!important;max-width:min(80vw,320px)!important}}
 </style>
-<noscript><div style="position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;font-family:'Instrument Serif',serif;padding:40px;text-align:center"><p style="font-size:2rem;margin:0">Somos roca en movimiento.</p><p style="font-style:italic;color:#8D9BB5">La gota horada la roca, no por su fuerza, sino por su constancia.</p></div></noscript>
+<noscript><div style="position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;font-family:'Instrument Serif',serif;padding:40px;text-align:center"><p style="font-size:2rem;margin:0">El silicio tambi&eacute;n es roca.</p><p style="font-style:italic;color:#8D9BB5">La gota horada la roca, no por su fuerza, sino por su constancia.</p></div></noscript>
 </helmet>
 <div ref="{{ canvasRef }}" role="region" aria-label="Plano infinito de lluvia — usa las flechas para navegar" tabindex="0" style="position:fixed;inset:0;width:100%;height:100dvh;overflow:hidden;touch-action:none;overscroll-behavior:none;cursor:grab;background:#EFEBE1;outline:none;transition:filter .7s ease,transform .7s ease;will-change:filter,transform">
   <canvas ref="{{ bgRef }}" aria-hidden="true" style="position:absolute;inset:0;display:block;width:100%;height:100%"></canvas>
 </div>
 
 <div ref="{{ heroRef }}" style="position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);box-sizing:border-box;display:flex;align-items:center;justify-content:center;width:clamp(340px,44vw,560px);height:clamp(190px,25vw,290px);z-index:20;pointer-events:none;background:rgba(248,246,240,.40);backdrop-filter:blur(4px) saturate(1.02);-webkit-backdrop-filter:blur(4px) saturate(1.02);-webkit-mask-image:radial-gradient(125% 130% at 50% 50%, #000 42%, rgba(0,0,0,0) 80%);mask-image:radial-gradient(125% 130% at 50% 50%, #000 42%, rgba(0,0,0,0) 80%);transition:opacity .6s ease,filter .6s ease">
-  <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-style:italic;font-size:clamp(1.8rem,4vw,3rem);line-height:1.1;letter-spacing:.005em;color:#2E3440;text-align:center;text-wrap:balance">"Somos roca<br>en movimiento."</h1>
+  <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-style:italic;font-size:clamp(1.8rem,4vw,3rem);line-height:1.1;letter-spacing:.005em;color:#2E3440;text-align:center;text-wrap:balance">El silicio<br>tambi&eacute;n es roca.</h1>
 </div>
 
 <header style="position:fixed;top:clamp(16px,3vw,26px);left:0;right:0;display:flex;justify-content:center;align-items:flex-start;padding:0 clamp(16px,3vw,32px);z-index:40;pointer-events:none">
@@ -138,7 +138,7 @@ class Component extends DCLogic {
     acerca:
       '<div style="display:flex;justify-content:space-between;font:500 10.5px/1.6 Archivo,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#a9a08c;margin-bottom:44px"><span>2026</span><span style="text-align:right">Iberoam&eacute;rica</span></div>' +
       this.EMBLEM +
-      '<h1 style="margin:0;text-align:center;font-family:\'Instrument Serif\',serif;font-weight:400;font-size:clamp(2rem,5.4vw,3.3rem);line-height:1.03;color:#2E3440;text-wrap:balance">Somos roca<br>en movimiento.</h1>' +
+      '<h1 style="margin:0;text-align:center;font-family:\'Instrument Serif\',serif;font-weight:400;font-size:clamp(2rem,5.4vw,3.3rem);line-height:1.03;color:#2E3440;text-wrap:balance">El silicio<br>tambi&eacute;n es roca.</h1>' +
       this.DOTTED +
       '<div style="max-width:60ch;margin:0 auto">' +
       '<p style="margin:0 0 20px;font-size:clamp(16px,1.4vw,18px);line-height:1.7;color:#4f4838">roca ventures acompa&ntilde;a a fundadores que entienden el tiempo como aliado. Invertimos temprano y nos quedamos: no buscamos el golpe de fuerza, sino la constancia que, gota a gota, termina por dar forma a la piedra.</p>' +
