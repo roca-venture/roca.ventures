@@ -229,11 +229,6 @@ class Component extends DCLogic {
     this.lastInput = performance.now();
     this.bg = [239, 235, 225];
     this.rainFound = false;
-    // ---- estela del puntero (ripple) ----
-    this.wakes = [];   // impactos vivos sembrados por el puntero
-    this._wk = [];     // los mismos, precalculados para el frame actual
-    this._dx = 0; this._dy = 0;
-    this._sx = 0; this._sy = 0; this._st = 0;
     this._mode = this.props.fondo || 'Lluvia';
     this.build();
     this.bindInput();
@@ -332,7 +327,6 @@ class Component extends DCLogic {
       this.lastInput = performance.now();
     });
     root.addEventListener('pointermove', (e) => {
-      this.seedWake(e.clientX, e.clientY);
       if (!this.dragging) return;
       const dx = e.clientX - this.lastX, dy = e.clientY - this.lastY;
       this.targetX -= dx; this.targetY -= dy;
@@ -386,80 +380,9 @@ class Component extends DCLogic {
     }
 
     this.updateAmbient();
-    this.updateWakes(now);
     this.drawFrame(now);
     this.raf = requestAnimationFrame(this.tick);
   };
-
-  // ---- estela del puntero: la gota horada la roca ----
-  // Ajustes. Subir AMP = deformacion mas marcada. Subir VIDA = estela mas larga.
-  RIP = {
-    AMP: 26,      // desplazamiento maximo en px, en la cresta del anillo
-    VEL: 240,     // px/s a los que se expande cada anillo
-    VIDA: 1.5,    // segundos que vive cada impacto
-    GROSOR: 38,   // ancho de la cresta en px (sigma de la gaussiana)
-    PASO: 26,     // distancia minima entre impactos sembrados
-    MAX: 24       // impactos simultaneos como maximo
-  };
-
-  seedWake(x, y) {
-    if (this.reduced) return;
-    const now = performance.now();
-    const dx = x - this._sx, dy = y - this._sy;
-    const d = Math.sqrt(dx * dx + dy * dy);
-    if (d < this.RIP.PASO) return;
-    const dt = Math.max(16, now - this._st);
-    // la fuerza sigue a la velocidad del puntero: un gesto lento apenas marca
-    const vel = Math.min(1, (d / dt) * 0.55);
-    this._sx = x; this._sy = y; this._st = now;
-    this.wakes.push({ x, y, t0: now, f: 0.35 + vel * 0.65 });
-    if (this.wakes.length > this.RIP.MAX) this.wakes.shift();
-  }
-
-  updateWakes(now) {
-    const W = this.wakes, R = this.RIP, out = this._wk;
-    out.length = 0;
-    if (!W.length) return;
-    let k = 0;
-    for (let i = 0; i < W.length; i++) {
-      const w = W[i];
-      const age = (now - w.t0) / 1000;
-      if (age >= R.VIDA) continue;
-      W[k++] = w;
-      const v = 1 - age / R.VIDA;
-      const rad = age * R.VEL;
-      const s = R.GROSOR;
-      const rmax = rad + s * 3;
-      out.push({
-        x: w.x, y: w.y, rad,
-        amp: R.AMP * w.f * v * v * Math.min(1, age / 0.05),
-        i2s2: 1 / (2 * s * s),
-        rmax, rmax2: rmax * rmax
-      });
-    }
-    W.length = k;
-  }
-
-  // Desplaza el punto (px,py) por el campo de estelas. Resultado en this._dx/_dy.
-  // Sin estelas activas devuelve 0,0 — el dibujo queda exactamente igual que antes.
-  dsp(px, py, k) {
-    this._dx = 0; this._dy = 0;
-    const W = this._wk, n = W.length;
-    if (!n) return;
-    let dx = 0, dy = 0;
-    for (let i = 0; i < n; i++) {
-      const w = W[i];
-      const ax = px - w.x, ay = py - w.y;
-      if (ax > w.rmax || ax < -w.rmax || ay > w.rmax || ay < -w.rmax) continue;
-      const d2 = ax * ax + ay * ay;
-      if (d2 > w.rmax2 || d2 < 1) continue;
-      const d = Math.sqrt(d2);
-      const b = d - w.rad;
-      const a = w.amp * Math.exp(-b * b * w.i2s2) / d;
-      dx += ax * a; dy += ay * a;
-    }
-    this._dx = dx * k; this._dy = dy * k;
-  }
 
   place(wx, wy, W, H) {
     const sx = this.mod(wx - this.offsetX, W), sy = this.mod(wy - this.offsetY, H);
@@ -484,29 +407,17 @@ class Component extends DCLogic {
     ctx.globalCompositeOperation = 'source-over';
   }
 
-  // dibuja un rectangulo con las cuatro esquinas desplazadas por la estela
-  quad(x, y, w, h, k) {
-    const ctx = this.ctx;
-    if (!this._wk.length) { ctx.fillRect(x, y, w, h); return; }
-    ctx.beginPath();
-    this.dsp(x, y, k); ctx.moveTo(x + this._dx, y + this._dy);
-    this.dsp(x + w, y, k); ctx.lineTo(x + w + this._dx, y + this._dy);
-    this.dsp(x + w, y + h, k); ctx.lineTo(x + w + this._dx, y + h + this._dy);
-    this.dsp(x, y + h, k); ctx.lineTo(x + this._dx, y + h + this._dy);
-    ctx.closePath(); ctx.fill();
-  }
-
   drawPlanos() {
     const ctx = this.ctx;
     ctx.globalCompositeOperation = 'multiply';
     for (const p of this.planes) for (const [x, y] of this.place(p.x, p.y, this.worldW, this.worldH)) {
       if (x > this.vw || y > this.vh || x + p.w < 0 || y + p.h < 0) continue;
-      ctx.globalAlpha = p.op; ctx.fillStyle = p.col; this.quad(x, y, p.w, p.h, 1.6);
+      ctx.globalAlpha = p.op; ctx.fillStyle = p.col; ctx.fillRect(x, y, p.w, p.h);
     }
     ctx.globalCompositeOperation = 'source-over';
     for (const v of this.veils) for (const [x, y] of this.place(v.x, v.y, this.worldW, this.worldH)) {
       if (x > this.vw || y > this.vh || x + v.w < 0 || y + v.h < 0) continue;
-      ctx.globalAlpha = 0.5; ctx.fillStyle = '#F9F7F2'; this.quad(x, y, v.w, v.h, 1.6);
+      ctx.globalAlpha = 0.5; ctx.fillStyle = '#F9F7F2'; ctx.fillRect(x, y, v.w, v.h);
     }
     ctx.globalAlpha = 1;
   }
@@ -522,10 +433,7 @@ class Component extends DCLogic {
       ctx.lineWidth = d.layer;
       for (const [x, y] of [[sx, sy], [sx - this.dropsW, sy], [sx, sy - this.dropsH], [sx - this.dropsW, sy - this.dropsH]]) {
         if (x > this.vw || y > this.vh || x < -4 || y + d.len < 0) continue;
-        ctx.beginPath();
-        this.dsp(x, y, 1); ctx.moveTo(x + this._dx, y + this._dy);
-        this.dsp(x + 2, y + d.len, 1); ctx.lineTo(x + 2 + this._dx, y + d.len + this._dy);
-        ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 2, y + d.len); ctx.stroke();
       }
     }
   }
@@ -538,21 +446,8 @@ class Component extends DCLogic {
         if (x > this.vw + r.max || y > this.vh + r.max || x + r.max < 0 || y + r.max < 0) continue;
         for (let k = 0; k < 2; k++) {
           const cyc = ((t * r.sp) + r.phase + k * 0.5) % 1;
-          const rr = cyc * r.max + 1;
           ctx.strokeStyle = `rgba(120,150,170,${(1 - cyc) * 0.26})`;
-          ctx.beginPath();
-          if (!this._wk.length) { ctx.arc(x, y, rr, 0, Math.PI * 2); }
-          else {
-            const seg = Math.max(16, Math.min(64, Math.round(rr / 5)));
-            for (let s = 0; s <= seg; s++) {
-              const a = s / seg * Math.PI * 2;
-              const px = x + Math.cos(a) * rr, py = y + Math.sin(a) * rr;
-              this.dsp(px, py, 1);
-              if (s === 0) ctx.moveTo(px + this._dx, py + this._dy);
-              else ctx.lineTo(px + this._dx, py + this._dy);
-            }
-          }
-          ctx.stroke();
+          ctx.beginPath(); ctx.arc(x, y, cyc * r.max + 1, 0, Math.PI * 2); ctx.stroke();
         }
       }
     }
@@ -561,16 +456,12 @@ class Component extends DCLogic {
   drawNiebla() {
     const ctx = this.ctx;
     ctx.globalCompositeOperation = 'multiply';
-    for (const b of this.blobs) for (const [x0, y0] of this.place(b.x, b.y, this.blobsW, this.blobsH)) {
-      if (x0 - b.r > this.vw || y0 - b.r > this.vh || x0 + b.r < 0 || y0 + b.r < 0) continue;
-      // Las nieblas son enormes y suaves: si moviera el circulo entero pareceria
-      // que resbalan. En vez de eso el contorno queda fijo y solo se desplaza el
-      // foco del degradado — que es justo lo que hace una lente con la luz.
-      this.dsp(x0, y0, 2.2);
-      const g = ctx.createRadialGradient(x0 + this._dx, y0 + this._dy, 0, x0, y0, b.r);
+    for (const b of this.blobs) for (const [x, y] of this.place(b.x, b.y, this.blobsW, this.blobsH)) {
+      if (x - b.r > this.vw || y - b.r > this.vh || x + b.r < 0 || y + b.r < 0) continue;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, b.r);
       g.addColorStop(0, this.hexA(b.col, b.a));
       g.addColorStop(1, this.hexA(b.col, 0));
-      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x0, y0, b.r, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, b.r, 0, Math.PI * 2); ctx.fill();
     }
     ctx.globalCompositeOperation = 'source-over';
   }
@@ -587,8 +478,7 @@ class Component extends DCLogic {
         const worldX = xx + ox;
         const wob = Math.sin(worldX * 0.004 + worldY * 0.010) * 14 + Math.sin(worldX * 0.012 + worldY * 0.004) * 6;
         const y = yy + wob;
-        this.dsp(xx, y, 1);
-        if (xx <= -6) ctx.moveTo(xx + this._dx, y + this._dy); else ctx.lineTo(xx + this._dx, y + this._dy);
+        if (xx <= -6) ctx.moveTo(xx, y); else ctx.lineTo(xx, y);
       }
       ctx.strokeStyle = `rgba(92,110,120,${0.10 + 0.05 * Math.sin(worldY * 0.02)})`;
       ctx.stroke();
