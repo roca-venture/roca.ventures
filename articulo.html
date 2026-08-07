@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script defer src="https://cloud.umami.is/script.js" data-website-id="3b2a6b9f-23a6-43ef-bb40-f3af4e8d0511" data-do-not-track="true" data-domains="roca.ventures"></script>
 <script src="./marked.min.js"></script>
 <style>
   html,body{margin:0;background:#EFEBE1;font-family:Archivo,system-ui,sans-serif;color:#2E3440;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
@@ -102,6 +103,55 @@
     $titulo.textContent = titulo;
     $cuerpo.innerHTML = marked.parse(md);
     window.scrollTo(0, 0);
+
+    // ---- metrica: ensayo_leido ----
+    // Se emite al SALIR, no al abrir, para poder adjuntar cuanto tiempo estuvo
+    // abierto y hasta donde bajo. Envio defensivo: sin Umami no hace nada.
+    (function () {
+      var visible = 0, desde = Date.now(), pausado = false, fondo = 0, enviado = false;
+      var palabras = md.split(/\s+/).length;
+      // minutos de lectura estimados a 200 palabras/min, el estandar habitual
+      var estimado = Math.max(1, Math.round(palabras / 200));
+
+      function marcarFondo() {
+        var alto = document.documentElement.scrollHeight - window.innerHeight;
+        var p = alto > 0 ? (window.scrollY / alto) : 1;
+        if (p > fondo) fondo = Math.min(1, p);
+      }
+      window.addEventListener('scroll', marcarFondo, { passive: true });
+      marcarFondo();
+
+      // El reloj solo corre con la pestana a la vista: si se va a otra pestana
+      // media hora, ese tiempo no es lectura y no debe contarse.
+      function pausar() { if (!pausado) { visible += Date.now() - desde; pausado = true; } }
+      function seguir() { if (pausado) { desde = Date.now(); pausado = false; } }
+
+      function enviar() {
+        if (enviado) return;
+        enviado = true;
+        pausar();
+        var seg = Math.round(visible / 1000);
+        try {
+          if (window.umami && window.umami.track) {
+            window.umami.track('ensayo_leido', {
+              ensayo: slug,
+              segundos: seg,
+              // % del ensayo al que llego bajando
+              profundidad: Math.round(fondo * 100),
+              // ¿estuvo el tiempo que tarda leerlo de verdad?
+              completado: seg >= estimado * 60 * 0.5 && fondo >= 0.75,
+              minutos_estimados: estimado
+            });
+          }
+        } catch (e) {}
+      }
+      // visibilitychange solo pausa y reanuda el reloj. El envio ocurre en
+      // pagehide, que es el evento fiable al salir, tambien en iOS.
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden') pausar(); else seguir();
+      });
+      window.addEventListener('pagehide', enviar);
+    })();
   } catch (e) {
     noEncontrado('No se pudo cargar el ensayo.');
   }

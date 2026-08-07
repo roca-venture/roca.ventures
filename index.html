@@ -6,6 +6,7 @@
 <title>Movimiento</title>
   <link rel="icon" type="image/png" href="apple-touch-icon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<script defer src="https://cloud.umami.is/script.js" data-website-id="3b2a6b9f-23a6-43ef-bb40-f3af4e8d0511" data-do-not-track="true" data-domains="roca.ventures"></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -83,6 +84,31 @@ class Component extends DCLogic {
     };
   }
 
+  // ---- metricas (Umami) ----
+  // Envio defensivo: si el visitante tiene Do Not Track, un bloqueador, o el
+  // script aun no cargo, esto no hace nada y el sitio sigue igual.
+  ev(nombre, datos) {
+    try { if (window.umami && window.umami.track) window.umami.track(nombre, datos); } catch (e) {}
+  }
+
+  // Distancia que el visitante arrastro el plano, POR SU MANO: rueda, arrastre y
+  // flechas. La deriva automatica no cuenta — moverse solo no es explorar.
+  // Se emite un evento la primera vez que se cruza cada tramo, no en cada gesto.
+  explorar(dx, dy) {
+    const d = Math.sqrt(dx * dx + dy * dy);
+    if (!d) return;
+    this.explorado = (this.explorado || 0) + d;
+    const px = this.explorado, pant = px / Math.max(1, this.vw || 1), t = this._tramos;
+    if (!t.primer_gesto && px >= 60) this.tramo('primer_gesto', pant);
+    if (!t.una_pantalla && pant >= 1) this.tramo('una_pantalla', pant);
+    if (!t.cinco_pantallas && pant >= 5) this.tramo('cinco_pantallas', pant);
+    if (!t.veinte_pantallas && pant >= 20) this.tramo('veinte_pantallas', pant);
+  }
+  tramo(k, pant) {
+    this._tramos[k] = 1;
+    this.ev('plano_explorado', { tramo: k, pantallas: Math.round(pant * 10) / 10 });
+  }
+
   // ---- Daybreak-style in-place panels ----
   onNav = (e) => {
     e.preventDefault();
@@ -104,6 +130,9 @@ class Component extends DCLogic {
     const p = this.panelRef.current, ov = this.overlayRef.current;
     if (!p || !ov) return;
     this._curKey = key;
+    // orden = cuantos paneles abrio antes que este en la misma visita
+    this._panelN = (this._panelN || 0) + 1;
+    this.ev('panel_abierto', { panel: key, orden: this._panelN });
     p.innerHTML = (key === 'ensayos') ? this.ensayosPanel() : (this.PANELS[key] || '');
     if (this.scrollRef.current) this.scrollRef.current.scrollTop = 0;
     ov.style.display = 'block';
@@ -229,6 +258,7 @@ class Component extends DCLogic {
     this.lastInput = performance.now();
     this.bg = [239, 235, 225];
     this.rainFound = false;
+    this.explorado = 0; this._tramos = {}; this._panelN = 0;
     this._mode = this.props.fondo || 'Lluvia';
     this.build();
     this.bindInput();
@@ -316,6 +346,7 @@ class Component extends DCLogic {
       e.preventDefault();
       this.targetX += e.deltaX; this.targetY += e.deltaY;
       this.velX = e.deltaX * 0.3; this.velY = e.deltaY * 0.3;
+      this.explorar(e.deltaX, e.deltaY);
       this.lastInput = performance.now();
     }, { passive: false });
     root.addEventListener('pointerdown', (e) => {
@@ -331,6 +362,7 @@ class Component extends DCLogic {
       const dx = e.clientX - this.lastX, dy = e.clientY - this.lastY;
       this.targetX -= dx; this.targetY -= dy;
       this.velX = -dx; this.velY = -dy;
+      this.explorar(dx, dy);
       this.lastX = e.clientX; this.lastY = e.clientY;
       this.lastInput = performance.now();
     });
@@ -350,6 +382,7 @@ class Component extends DCLogic {
       else if (e.key === 'ArrowDown') this.targetY += step;
       else if (e.key === 'ArrowUp') this.targetY -= step;
       else return;
+      this.explorar(step, 0);
       e.preventDefault();
       this.lastInput = performance.now();
     });
